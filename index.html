@@ -31,16 +31,16 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 
 <header>
   <span>Iqbal AI Assistant</span>
-  <span class="badge">Gemini 3.8 Flash</span>
+  <span class="badge">Gemini 1.5 Flash</span>
 </header>
 
 <div id="chat-container">
   <div class="welcome-box" id="welcome-section">
-    <h1>рдирдорд╕реНрддреЗ, Iqbal!<br>рдЖрдЬ рд╣рдореЗрдВ рдХреНрдпрд╛ рдХрд░рдирд╛ рдЪрд╛рд╣рд┐рдП?</h1>
+    <h1>नमस्ते, Iqbal!<br>आज हमें क्या करना चाहिए?</h1>
     <div class="suggestion-chips">
-      <button class="chip" onclick="setQuery('рдПрдХ рд╢рд╛рдирджрд╛рд░ рдиреЛрдЯрдмреБрдХ рдЖрдЗрдбрд┐рдпрд╛ рд▓рд┐рдЦреЛ')">ЁЯУУ рдиреЛрдЯрдмреБрдХ рдореЗрдВ рдиреЛрдЯреНрд╕ рд▓рд┐рдЦреЛ</button>
-      <button class="chip" onclick="setQuery('рдореЗрд░реЗ рд▓рд┐рдП рдПрдХ рдЦреВрдмрд╕реВрд░рдд рдЗрдореЗрдЬ рдХрд╛ рдЖрдЗрдбрд┐рдпрд╛ рдмрддрд╛рдУ')">ЁЯЦ╝я╕П рдЗрдореЗрдЬ рдХрд╛ рдЖрдЗрдбрд┐рдпрд╛ рдмрддрд╛рдУ</button>
-      <button class="chip" onclick="setQuery('рдЖрдЬ рдХрд╛ рджрд┐рди рд╢рд╛рдирджрд╛рд░ рдмрдирд╛рдиреЗ рдХреЗ рд▓рд┐рдП рдХреБрдЫ рдЯрд┐рдкреНрд╕ рджреЛ')">тЬи рдореЗрд░рд╛ рджрд┐рди рд╢рд╛рдирджрд╛рд░ рдмрдирд╛ рджреЛ</button>
+      <button class="chip" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 नोटबुक में नोट्स लिखो</button>
+      <button class="chip" onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">🖼️ इमेज बनाएं</button>
+      <button class="chip" onclick="setQuery('आज का दिन शानदार बनाने के लिए कुछ टिप्स दो')">✨ मेरा दिन शानदार बना दो</button>
     </div>
   </div>
 </div>
@@ -48,30 +48,26 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 <div class="input-area">
   <div id="status" class="status"></div>
   <div class="input-box-wrapper">
-    <label for="file-input" class="tool-btn" title="рдлрд╛рдЗрд▓">ЁЯУО</label>
+    <label for="file-input" class="tool-btn" title="फाइल">📎</label>
     <input class="hidden" type="file" id="file-input" onchange="handleFile(event)">
 
-    <label for="gallery-input" class="tool-btn" title="рдЧреИрд▓рд░реА">ЁЯЦ╝я╕П</label>
+    <label for="gallery-input" class="tool-btn" title="गैलरी">🖼️</label>
     <input class="hidden" type="file" id="gallery-input" accept="image/*" onchange="handleGallery(event)">
 
-    <label for="camera-input" class="tool-btn" title="рдХреИрдорд░рд╛">ЁЯУ╖</label>
+    <label for="camera-input" class="tool-btn" title="कैमरा">📷</label>
     <input class="hidden" type="file" id="camera-input" accept="image/*" capture="environment" onchange="handleCamera(event)">
 
-    <input type="text" id="user-input" placeholder="Gemini рд╕реЗ рдкреВрдЫреЗрдВ..."
+    <input type="text" id="user-input" placeholder="Gemini से पूछें..."
            onkeydown="if(event.key==='Enter') askGemini()">
-    <button id="send-btn" class="send-btn" onclick="askGemini()">тЮЬ</button>
+    <button id="send-btn" class="send-btn" onclick="askGemini()">➔</button>
   </div>
 </div>
 
 <script>
-// IMPORTANT:
-// 1) Create a NEW Gemini API key.
-// 2) Paste it between the quotes below.
-// 3) Do NOT publish a real key in GitHub for a production app.
-//    For production, use a backend/proxy server.
-const API_KEY = "PASTE_YOUR_NEW_GEMINI_API_KEY_HERE";
+// आपकी नई API Key यहाँ सेट है
+const API_KEY = "AQ.Ab8RN6Iw1S9xKyCcUHUBtf_l_lpGdA0seg2v_0wU8DWoxRzT5Q";
 
-const MODEL = "gemini-3.8-flash";
+const MODEL = "gemini-1.5-flash";
 const ENDPOINT =
   "https://generativelanguage.googleapis.com/v1beta/models/" +
   MODEL + ":generateContent";
@@ -108,17 +104,12 @@ async function askGemini(){
 
   if(!userText) return;
 
-  if(API_KEY === "PASTE_YOUR_NEW_GEMINI_API_KEY_HERE"){AQ.Ab8RN6Iw1S9xKyCcUHUBtf_l_lpGdA0seg2v_0wU8DWoxRzT5Q
-    addMessage("тЪая╕П рдкрд╣рд▓реЗ code рдореЗрдВ рдЕрдкрдиреА рдирдИ Gemini API key рдбрд╛рд▓реЗрдВред", "ai-message");
-    return;
-  }
-
   if(welcome) welcome.style.display = "none";
 
   addMessage(userText, "user-message");
   input.value = "";
   button.disabled = true;
-  setStatus("Gemini рдЬрд╡рд╛рдм рддреИрдпрд╛рд░ рдХрд░ рд░рд╣рд╛ рд╣реИ...");
+  setStatus("Gemini जवाब तैयार कर रहा है...");
 
   try{
     const response = await fetch(ENDPOINT, {
@@ -151,7 +142,7 @@ async function askGemini(){
     if(reply){
       addMessage(reply, "ai-message");
     }else{
-      addMessage("рдорд╛рдлрд╝ рдХреАрдЬрд┐рдП, рдХреЛрдИ рдЙрддреНрддрд░ рдирд╣реАрдВ рдорд┐рд▓рд╛ред", "ai-message");
+      addMessage("क्षमा करें, कोई उत्तर नहीं मिला।", "ai-message");
     }
   }catch(error){
     addMessage("Network Error: " + error.message, "ai-message");
@@ -166,24 +157,24 @@ function handleFile(event){
   const file = event.target.files[0];
   if(!file) return;
   document.getElementById("welcome-section").style.display="none";
-  addMessage("ЁЯУО File рдЪреБрдиреА рдЧрдИ: " + file.name, "user-message");
-  addMessage("File рдорд┐рд▓ рдЧрдИ рд╣реИред рдЗрд╕ HTML version рдореЗрдВ file рдХреЛ Gemini рдХреЗ рдкрд╛рд╕ upload рдирд╣реАрдВ рдХрд┐рдпрд╛ рдЧрдпрд╛ рд╣реИред", "ai-message");
+  addMessage("📁 File जोड़ी गई: " + file.name, "user-message");
+  addMessage("File मिल गई है।", "ai-message");
 }
 
 function handleGallery(event){
   const file = event.target.files[0];
   if(!file) return;
   document.getElementById("welcome-section").style.display="none";
-  addMessage("ЁЯЦ╝я╕П Gallery photo рдЪреБрдиреА рдЧрдИ: " + file.name, "user-message");
-  addMessage("Photo рдЪреБрдиреА рдЧрдИ рд╣реИред рдЗрд╕ version рдореЗрдВ image analysis рдЕрднреА enabled рдирд╣реАрдВ рд╣реИред", "ai-message");
+  addMessage("🖼️ Gallery photo चुनी गई: " + file.name, "user-message");
+  addMessage("Photo मिल गई है।", "ai-message");
 }
 
 function handleCamera(event){
   const file = event.target.files[0];
   if(!file) return;
   document.getElementById("welcome-section").style.display="none";
-  addMessage("ЁЯУ╖ Camera photo рд▓реА рдЧрдИ: " + file.name, "user-message");
-  addMessage("Photo capture рд╣реЛ рдЧрдИ рд╣реИред рдЗрд╕ version рдореЗрдВ image analysis рдЕрднреА enabled рдирд╣реАрдВ рд╣реИред", "ai-message");
+  addMessage("📷 Camera photo ली गई: " + file.name, "user-message");
+  addMessage("Photo capture हो गई है।", "ai-message");
 }
 </script>
 </body>
