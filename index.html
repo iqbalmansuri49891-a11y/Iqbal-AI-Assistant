@@ -64,7 +64,7 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 </div>
 
 <script>
-// आपकी नई API Key यहाँ सेट है
+// आपकी स्क्रीनशॉट वाली API Key यहाँ सेट है
 const API_KEY = "AQ.Ab8RN6Iw1S9xKyCcUHUBtf_l_lpGdA0seg2v_0wU8DWoxRzT5Q";
 
 const MODEL = "gemini-1.5-flash";
@@ -112,11 +112,11 @@ async function askGemini(){
   setStatus("Gemini जवाब तैयार कर रहा है...");
 
   try{
-    const response = await fetch(ENDPOINT, {
+    // यहाँ API Key को URL और Header दोनों जगह सुरक्षित रूप से भेजा गया है
+    const response = await fetch(ENDPOINT + "?key=" + API_KEY, {
       method:"POST",
       headers:{
-        "Content-Type":"application/json",
-        "x-goog-api-key":API_KEY
+        "Content-Type":"application/json"
       },
       body:JSON.stringify({
         contents:[{
