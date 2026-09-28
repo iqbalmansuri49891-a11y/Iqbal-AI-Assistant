@@ -31,7 +31,7 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 
 <header>
   <span>Iqbal AI Assistant</span>
-  <span class="badge">Gemini 3.8 Flash</span>
+  <span class="badge">Gemini Flash</span>
 </header>
 
 <div id="chat-container">
@@ -64,11 +64,10 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 </div>
 
 <script>
-const API_KEY = "AQ.Ab8RN6J8U1hrEY9PCH8oOnWLaw6YhPWJxeAMslcer7aCihOtCA";
+// OAuth Credentials & Config
+const CREDENTIAL = "AQ.Ab8RN6J8U1hrEY9PCH8oOnWLaw6YhPWJxeAMslcer7aCihOtCA";
 const MODEL = "gemini-3.8-flash";
-const ENDPOINT =
-  "https://generativelanguage.googleapis.com/v1beta/models/" +
-  MODEL + ":generateContent";
+const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL + ":generateContent";
 
 function escapeHTML(text){
   return text.replace(/[&<>"']/g, function(c){
@@ -110,10 +109,14 @@ async function askGemini(){
   setStatus("Gemini जवाब तैयार कर रहा है...");
 
   try{
-    const response = await fetch(ENDPOINT + "?key=" + API_KEY, {
+    // OAuth token format handling for secure header injection
+    const authHeader = CREDENTIAL.startsWith("AQ.") ? "Bearer " + CREDENTIAL : "Bearer " + CREDENTIAL;
+
+    const response = await fetch(ENDPOINT, {
       method:"POST",
       headers:{
-        "Content-Type":"application/json"
+        "Content-Type":"application/json",
+        "Authorization": authHeader
       },
       body:JSON.stringify({
         contents:[{
