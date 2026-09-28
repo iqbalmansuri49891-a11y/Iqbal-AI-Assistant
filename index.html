@@ -167,8 +167,8 @@
     </div>
 
     <script>
-        // आपकी नई API Key यहाँ सेट कर दी गई है
-        const API_KEY = 'AQ.Ab8RN6LU5Q_I9VQC2LwOOJcvjLY5Go3mU0PK_hXGHpCl2lMQgg';
+        // Aapki nayi API Key yahan set hai
+        const API_KEY = 'AQ.Ab8RN6ILXAKvKy26VW-XLBLodZD2-xwh8qYLfM4B8iw0oV_cDQ';
 
         function setQuery(text) {
             document.getElementById('user-input').value = text;
@@ -210,13 +210,13 @@
                     const aiReply = data.candidates[0].content.parts[0].text;
                     chatContainer.innerHTML += `<div class="message ai-message">${aiReply}</div>`;
                 } else if (data.error) {
-                    chatContainer.innerHTML += `<div class="message ai-message">API एरर: ${data.error.message}</div>`;
+                    chatContainer.innerHTML += `<div class="message ai-message">API Error: ${data.error.message}</div>`;
                 } else {
-                    chatContainer.innerHTML += `<div class="message ai-message">क्षमा करें, कोई उत्तर नहीं मिला।</div>`;
+                    chatContainer.innerHTML += `<div class="message ai-message">Kshama karein, koi uttar nahi mila.</div>`;
                 }
             } catch (error) {
                 console.error("Error:", error);
-                chatContainer.innerHTML += `<div class="message ai-message">कनेक्शन त्रुटि: ${error.message}</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">Network Error: ${error.message}</div>`;
             }
 
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -227,8 +227,8 @@
             if (file) {
                 const chatContainer = document.getElementById('chat-container');
                 document.getElementById('welcome-section').style.display = 'none';
-                chatContainer.innerHTML += `<div class="message user-message">📁 फाइल जोड़ी गई: ${file.name}</div>`;
-                chatContainer.innerHTML += `<div class="message ai-message">फाइल (${file.name}) मिल गई है। इस पर क्या करना है?</div>`;
+                chatContainer.innerHTML += `<div class="message user-message">📁 File jodi gayi: ${file.name}</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">File (${file.name}) mil gayi hai. Is par kya karna hai?</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
@@ -238,8 +238,8 @@
             if (file) {
                 const chatContainer = document.getElementById('chat-container');
                 document.getElementById('welcome-section').style.display = 'none';
-                chatContainer.innerHTML += `<div class="message user-message">🖼️ [गैलरी फोटो चुनी गई]</div>`;
-                chatContainer.innerHTML += `<div class="message ai-message">इमेज आ गई है! इसके बारे में क्या जानना चाहते हैं?</div>`;
+                chatContainer.innerHTML += `<div class="message user-message">🖼️ [Gallery photo chuni gayi]</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">Image aa gayi hai! Iske baare mein kya janna chahte hain?</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
@@ -249,8 +249,8 @@
             if (file) {
                 const chatContainer = document.getElementById('chat-container');
                 document.getElementById('welcome-section').style.display = 'none';
-                chatContainer.innerHTML += `<div class="message user-message">📷 [कैमरा फोटो ली गई]</div>`;
-                chatContainer.innerHTML += `<div class="message ai-message">फोटो कैप्चर हो गई है! बताइए आगे क्या करना है?</div>`;
+                chatContainer.innerHTML += `<div class="message user-message">📷 [Camera photo li gayi]</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">Photo capture ho gayi hai! Bataiye aage kya karna hai?</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
