@@ -96,9 +96,9 @@
             background: #f0f4f9;
             border-radius: 24px;
             padding: 8px 15px;
-            gap: 10px;
+            gap: 12px;
         }
-        .input-box-wrapper input {
+        .input-box-wrapper input[type="text"] {
             flex: 1;
             background: transparent;
             border: none;
@@ -106,18 +106,13 @@
             font-size: 16px;
             color: #333;
         }
-        .tool-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
         .tool-btn {
             background: none;
             border: none;
             cursor: pointer;
             font-size: 18px;
             color: #555;
-            padding: 5px;
+            padding: 2px;
         }
         .send-btn {
             background: #0b57d0;
@@ -135,7 +130,7 @@
         .send-btn:hover {
             background: #0842a0;
         }
-        #file-input, #camera-input {
+        #file-input, #camera-input, #gallery-input {
             display: none;
         }
     </style>
@@ -160,10 +155,15 @@
 
     <div class="input-area">
         <div class="input-box-wrapper">
-            <!-- फाइल और कैमरा जोड़ने के बटन -->
+            <!-- फाइल / डॉक्यूमेंट -->
             <label for="file-input" class="tool-btn" title="फाइल या डॉक्यूमेंट जोड़ें">📎</label>
             <input type="file" id="file-input" onchange="handleFile(event)">
 
+            <!-- गैलरी से फोटो चुनें -->
+            <label for="gallery-input" class="tool-btn" title="गैलरी से फोटो चुनें">🖼️</label>
+            <input type="file" id="gallery-input" accept="image/*" onchange="handleGallery(event)">
+
+            <!-- कैमरा से फोटो लें -->
             <label for="camera-input" class="tool-btn" title="कैमरा से फोटो लें">📷</label>
             <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="handleCamera(event)">
 
@@ -174,7 +174,7 @@
     </div>
 
     <script>
-        const API_KEY = 'AQ.Ab8RN6LGPuzHXPd25c9LOHtS_Agcd8a4UzzvsphB4U1Lq1RcRw';
+        const API_KEY = 'AQ.Ab8RN6Jw4BJp45n7ymdD6kCNVZxXn1fH6bGDaQOPflMbpZ6a4w';
 
         function setQuery(text) {
             document.getElementById('user-input').value = text;
@@ -193,7 +193,6 @@
                 welcomeSection.style.display = 'none';
             }
 
-            // यूजर मैसेज जोड़ें
             chatContainer.innerHTML += `<div class="message user-message">${userText}</div>`;
             inputField.value = '';
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -232,8 +231,19 @@
             if (file) {
                 const chatContainer = document.getElementById('chat-container');
                 document.getElementById('welcome-section').style.display = 'none';
-                chatContainer.innerHTML += `<div class="message user-message">📁 फाइल अपलोड की गई: ${file.name}</div>`;
-                chatContainer.innerHTML += `<div class="message ai-message">मैंने आपकी फाइल (${file.name}) देख ली है। बताइए इस पर क्या करना है?</div>`;
+                chatContainer.innerHTML += `<div class="message user-message">📁 फाइल जोड़ी गई: ${file.name}</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">मैंने आपकी फाइल (${file.name}) ले ली है। बताइए इस पर क्या करना है?</div>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+
+        function handleGallery(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const chatContainer = document.getElementById('chat-container');
+                document.getElementById('welcome-section').style.display = 'none';
+                chatContainer.innerHTML += `<div class="message user-message">🖼️ [गैलरी से फोटो चुनी गई]</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">बढ़िया इमेज है! इस इमेज के बारे में आप क्या जानना चाहते हैं?</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
@@ -243,8 +253,8 @@
             if (file) {
                 const chatContainer = document.getElementById('chat-container');
                 document.getElementById('welcome-section').style.display = 'none';
-                chatContainer.innerHTML += `<div class="message user-message">📷 [कैमरा फोटो कैप्चर की गई]</div>`;
-                chatContainer.innerHTML += `<div class="message ai-message">बढ़िया फोटो है! इस फोटो के बारे में आप क्या जानना चाहते हैं?</div>`;
+                chatContainer.innerHTML += `<div class="message user-message">📷 [कैमरा से फोटो ली गई]</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">फोटो आ गई है! बताइए इस फोटो पर क्या काम करना है?</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
