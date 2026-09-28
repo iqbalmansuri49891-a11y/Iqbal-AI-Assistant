@@ -167,7 +167,8 @@
     </div>
 
     <script>
-        const API_KEY = 'AQ.Ab8RN6Jw4BJp45n7ymdD6kCNVZxXn1fH6bGDaQOPflMbpZ6a4w';
+        // आपकी नई API Key यहाँ सेट कर दी गई है
+        const API_KEY = 'AQ.Ab8RN6LU5Q_I9VQC2LwOOJcvjLY5Go3mU0PK_hXGHpCl2lMQgg';
 
         function setQuery(text) {
             document.getElementById('user-input').value = text;
@@ -209,14 +210,13 @@
                     const aiReply = data.candidates[0].content.parts[0].text;
                     chatContainer.innerHTML += `<div class="message ai-message">${aiReply}</div>`;
                 } else if (data.error) {
-                    // अब यह असली कारण (Error) स्क्रीन पर दिखाएगा
                     chatContainer.innerHTML += `<div class="message ai-message">API एरर: ${data.error.message}</div>`;
                 } else {
-                    chatContainer.innerHTML += `<div class="message ai-message">क्षमा करें, कोई उत्तर नहीं मिला। (डेटा स्ट्रक्चर मेल नहीं खा रहा)</div>`;
+                    chatContainer.innerHTML += `<div class="message ai-message">क्षमा करें, कोई उत्तर नहीं मिला।</div>`;
                 }
             } catch (error) {
                 console.error("Error:", error);
-                chatContainer.innerHTML += `<div class="message ai-message">नेटवर्क या कनेक्शन त्रुटि: ${error.message}</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">कनेक्शन त्रुटि: ${error.message}</div>`;
             }
 
             chatContainer.scrollTop = chatContainer.scrollHeight;
