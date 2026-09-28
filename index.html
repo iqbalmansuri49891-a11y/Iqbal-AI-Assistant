@@ -31,7 +31,7 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 
 <header>
   <span>Iqbal AI Assistant</span>
-  <span class="badge">Gemini 1.5 Flash</span>
+  <span class="badge">Gemini Flash</span>
 </header>
 
 <div id="chat-container">
@@ -64,10 +64,9 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
 </div>
 
 <script>
-// आपकी नई API Key यहाँ सेट है
+// आपकी API Key और लेटेस्ट मॉडल यहाँ सेट है
 const API_KEY = "AQ.Ab8RN6J8U1hrEY9PCH8oOnWLaw6YhPWJxeAMslcer7aCihOtCA";
-
-const MODEL = "gemini-1.5-flash";
+const MODEL = "gemini-2.5-flash"; 
 const ENDPOINT =
   "https://generativelanguage.googleapis.com/v1beta/models/" +
   MODEL + ":generateContent";
