@@ -89,8 +89,8 @@
             align-items: center;
             background: #f0f4f9;
             border-radius: 24px;
-            padding: 4px 8px 4px 12px;
-            gap: 8px;
+            padding: 4px 6px 4px 10px;
+            gap: 6px;
         }
         .input-box-wrapper input[type="text"] {
             flex: 1;
@@ -100,27 +100,30 @@
             font-size: 15px;
             color: #333;
             padding: 8px 0;
+            min-width: 50px;
         }
         .tool-btn {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 17px;
             color: #555;
-            padding: 6px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
         }
         .send-btn {
             background: #0b57d0;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             flex-shrink: 0;
         }
         #file-input, #camera-input, #gallery-input {
@@ -159,7 +162,6 @@
 
             <input type="text" id="user-input" placeholder="Gemini से पूछें..." onkeydown="if(event.key === 'Enter') askGemini()">
             
-            <!-- सेंड बटन अब बिल्कुल पास और नजदीक है -->
             <button class="send-btn" onclick="askGemini()">➔</button>
         </div>
     </div>
@@ -206,12 +208,15 @@
                 if (data.candidates && data.candidates[0].content.parts[0].text) {
                     const aiReply = data.candidates[0].content.parts[0].text;
                     chatContainer.innerHTML += `<div class="message ai-message">${aiReply}</div>`;
+                } else if (data.error) {
+                    // अब यह असली कारण (Error) स्क्रीन पर दिखाएगा
+                    chatContainer.innerHTML += `<div class="message ai-message">API एरर: ${data.error.message}</div>`;
                 } else {
-                    chatContainer.innerHTML += `<div class="message ai-message">क्षमा करें, कोई उत्तर नहीं मिला।</div>`;
+                    chatContainer.innerHTML += `<div class="message ai-message">क्षमा करें, कोई उत्तर नहीं मिला। (डेटा स्ट्रक्चर मेल नहीं खा रहा)</div>`;
                 }
             } catch (error) {
                 console.error("Error:", error);
-                chatContainer.innerHTML += `<div class="message ai-message">कनेक्शन में त्रुटि हुई है। कृपया पुनः प्रयास करें।</div>`;
+                chatContainer.innerHTML += `<div class="message ai-message">नेटवर्क या कनेक्शन त्रुटि: ${error.message}</div>`;
             }
 
             chatContainer.scrollTop = chatContainer.scrollHeight;
