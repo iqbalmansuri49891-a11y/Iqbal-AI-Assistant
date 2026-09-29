@@ -68,8 +68,8 @@ input[type=text]::placeholder{color:#8696a0}
     <input class="hidden" type="file" id="gallery-input" accept="image/*" onchange="handleGallery(event)">
 
     <input type="text" id="user-input" placeholder="यहाँ अपना सवाल लिखें..."
-           onkeydown="if(event.key==='Enter') askGemini()">
-    <button id="send-btn" class="send-btn" onclick="askGemini()">➔</button>
+           onkeydown="if(event.key==='Enter') askOpenAI()">
+    <button id="send-btn" class="send-btn" onclick="askOpenAI()">➔</button>
   </div>
 </div>
 
@@ -108,14 +108,14 @@ function addMessage(text, type){
 
 function setQuery(text){
   document.getElementById("user-input").value = text;
-  askGemini();
+  askOpenAI();
 }
 
 function setStatus(text){
   document.getElementById("status").textContent = text || "";
 }
 
-async function askGemini(){
+async function askOpenAI(){
   const input = document.getElementById("user-input");
   const button = document.getElementById("send-btn");
   const welcome = document.getElementById("welcome-section");
@@ -130,33 +130,30 @@ async function askGemini(){
   setStatus(currentLang === 'eng' ? "Generating response..." : "जवाब तैयार किया जा रहा है...");
 
   try{
-    const CREDENTIAL = "AQ.Ab8RN6LRjycGIkyvIuB4i0w-xQmFZjMLlGGImCCupkOF4VpH-A";
-    const MODEL = "gemini-1.5-flash";
-    const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL + ":generateContent";
+    const API_KEY = "Sk-proj-GqWATdALqmz1lykEZMi3qdFe6ryXGfIhTH0GqVKNZSeo5meZykcYjdzb1jpg0V4P_X7s2Ly7aAT3BlbkFJSyOtAPIJ2W3kxBSgvXC8FA8L6YRTn93nzCzMeR2sGIvn-BmJWuO17oyf-CNWJhwKtHOGF22okA".trim();
+    const ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     const response = await fetch(ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + CREDENTIAL
+        "Authorization": "Bearer " + API_KEY
       },
       body: JSON.stringify({
-        contents: [{
-          role: "user",
-          parts: [{ text: userText }]
-        }]
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: userText }]
       })
     });
 
     const data = await response.json();
 
     if(!response.ok){
-      const msg = data?.error?.message || "Authentication Error";
-      addMessage("API Error: " + msg, "ai-message");
+      const msg = data?.error?.message || "API Error";
+      addMessage("Error: " + msg, "ai-message");
       return;
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("").trim();
+    const reply = data?.choices?.[0]?.message?.content?.trim();
     if(reply){
       addMessage(reply, "ai-message");
     } else {
