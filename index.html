@@ -130,7 +130,7 @@ async function askOpenAI(){
   setStatus(currentLang === 'eng' ? "Generating response..." : "जवाब तैयार किया जा रहा है...");
 
   try{
-    const API_KEY = "Sk-proj-GqWATdALqmz1lykEZMi3qdFe6ryXGfIhTH0GqVKNZSeo5meZykcYjdzb1jpg0V4P_X7s2Ly7aAT3BlbkFJSyOtAPIJ2W3kxBSgvXC8FA8L6YRTn93nzCzMeR2sGIvn-BmJWuO17oyf-CNWJhwKtHOGF22okA".trim();
+    const API_KEY = "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".trim();
     const ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     const response = await fetch(ENDPOINT, {
