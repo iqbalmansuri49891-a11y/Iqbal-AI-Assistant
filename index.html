@@ -3,44 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b141a">
 <title>Iqbal AI Assistant</title>
 <style>
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f8f9fa;margin:0;height:100vh;display:flex;flex-direction:column}
-header{padding:12px 16px;background:#fff;border-bottom:1px solid #eaeaea;display:flex;justify-content:space-between;align-items:center;font-size:20px;font-weight:700;color:#333}
-.badge{font-size:13px;background:#e8f0fe;color:#1967d2;padding:4px 9px;border-radius:12px}
-#chat-container{flex:1;background:#fff;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
-.welcome-box h1{font-size:24px;color:#1f1f1f;margin:10px 0 20px}
-.suggestion-chips{display:flex;flex-direction:column;gap:8px}
-.chip{background:#f0f4f9;padding:11px 16px;border-radius:18px;font-size:14px;color:#444;cursor:pointer;width:fit-content;border:0}
-.message{padding:10px 14px;border-radius:12px;max-width:88%;line-height:1.5;font-size:15px;word-break:break-word;white-space:pre-wrap}
-.user-message{background:#d3e3fd;color:#041e49;align-self:flex-end;border-bottom-right-radius:3px}
-.ai-message{background:#f0f4f9;color:#1f1f1f;align-self:flex-start;border-bottom-left-radius:3px}
-.input-area{background:#fff;padding:10px 12px;border-top:1px solid #eaeaea}
-.input-box-wrapper{display:flex;align-items:center;background:#f0f4f9;border-radius:24px;padding:4px 6px 4px 10px;gap:5px}
-input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px;color:#333;padding:8px 0;min-width:50px}
-.tool-btn{background:none;border:0;cursor:pointer;font-size:18px;color:#555;padding:5px;display:flex}
-.send-btn{background:#0b57d0;color:#fff;border:0;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0b141a;color:#e9edef;margin:0;height:100vh;display:flex;flex-direction:column}
+header{padding:12px 16px;background:#111b21;border-bottom:1px solid #222d34;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{background:#d4af37;color:#0b141a;font-weight:700;padding:6px 12px;border-radius:8px;font-size:16px}
+.title-text{font-size:18px;font-weight:700;color:#f3f4f6}
+.lang-selector{display:flex;background:#202c33;border-radius:20px;padding:3px;gap:3px}
+.lang-btn{background:transparent;border:0;color:#8696a0;padding:5px 12px;border-radius:16px;font-size:12px;cursor:pointer;font-weight:600}
+.lang-btn.active{background:#d4af37;color:#0b141a}
+#chat-container{flex:1;background:#0b141a;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.welcome-box{background:#111b21;padding:20px;border-radius:12px;border:1px solid #222d34;margin-bottom:10px}
+.welcome-box h1{font-size:18px;color:#f3f4f6;margin:0 0 10px;line-height:1.6}
+.suggestion-chips{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.chip{background:#202c33;padding:10px 14px;border-radius:10px;font-size:13px;color:#d4af37;cursor:pointer;width:fit-content;border:1px solid #222d34;text-align:left}
+.message{padding:10px 14px;border-radius:12px;max-width:88%;line-height:1.6;font-size:14px;word-break:break-word;white-space:pre-wrap}
+.user-message{background:#005c4b;color:#e9edef;align-self:flex-end;border-bottom-right-radius:3px}
+.ai-message{background:#202c33;color:#e9edef;align-self:flex-start;border-bottom-left-radius:3px;border:1px solid #222d34}
+.input-area{background:#111b21;padding:10px 12px;border-top:1px solid #222d34}
+.input-box-wrapper{display:flex;align-items:center;background:#202c33;border-radius:24px;padding:4px 8px 4px 12px;gap:6px;border:1px solid #222d34}
+input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:14px;color:#e9edef;padding:8px 0}
+input[type=text]::placeholder{color:#8696a0}
+.tool-btn{background:none;border:0;cursor:pointer;font-size:18px;color:#8696a0;padding:5px;display:flex}
+.send-btn{background:#d4af37;color:#0b141a;border:0;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
 .send-btn:disabled{opacity:.5}
 .hidden{display:none}
-.status{font-size:12px;color:#666;text-align:center;padding:4px}
+.status{font-size:11px;color:#8696a0;text-align:center;padding:4px}
 </style>
 </head>
 <body>
 
 <header>
-  <span>Iqbal AI Assistant</span>
-  <span class="badge">Gemini Flash</span>
+  <div class="brand">
+    <div class="logo">AI</div>
+    <div class="title-text">Iqbal AI Assistant</div>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" id="btn-hi" onclick="setLang('hi')">हिंदी</button>
+    <button class="lang-btn" id="btn-eng" onclick="setLang('eng')">English</button>
+  </div>
 </header>
 
 <div id="chat-container">
   <div class="welcome-box" id="welcome-section">
-    <h1>नमस्ते, Iqbal!<br>आज हमें क्या करना चाहिए?</h1>
+    <h1 id="welcome-text">नमस्ते! आज हम क्या नया सीख सकते हैं?</h1>
     <div class="suggestion-chips">
-      <button class="chip" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 नोटबुक में नोट्स लिखो</button>
-      <button class="chip" onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">🖼️ इमेज बनाएं</button>
-      <button class="chip" onclick="setQuery('आज का दिन शानदार बनाने के लिए कुछ टिप्स दो')">✨ मेरा दिन शानदार बना दो</button>
+      <button class="chip" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 एक शानदार नोटबुक आइडिया लिखो</button>
+      <button class="chip" onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">🖼️ खूबसूरत इमेज का आइडिया</button>
+      <button class="chip" onclick="setQuery('आज का दिन शानदार बनाने के लिए कुछ टिप्स दो')">✨ आज का दिन शानदार बनाने के टिप्स</button>
     </div>
   </div>
 </div>
@@ -54,20 +67,29 @@ input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:15px
     <label for="gallery-input" class="tool-btn" title="गैलरी">🖼️</label>
     <input class="hidden" type="file" id="gallery-input" accept="image/*" onchange="handleGallery(event)">
 
-    <label for="camera-input" class="tool-btn" title="कैमरा">📷</label>
-    <input class="hidden" type="file" id="camera-input" accept="image/*" capture="environment" onchange="handleCamera(event)">
-
-    <input type="text" id="user-input" placeholder="Gemini से पूछें..."
+    <input type="text" id="user-input" placeholder="यहाँ अपना सवाल लिखें..."
            onkeydown="if(event.key==='Enter') askGemini()">
     <button id="send-btn" class="send-btn" onclick="askGemini()">➔</button>
   </div>
 </div>
 
 <script>
-// OAuth Credentials & Config
-const CREDENTIAL = "AQ.Ab8RN6J8U1hrEY9PCH8oOnWLaw6YhPWJxeAMslcer7aCihOtCA";
-const MODEL = "gemini-3.8-flash";
-const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL + ":generateContent";
+let currentLang = 'hi';
+
+function setLang(lang){
+  currentLang = lang;
+  document.getElementById('btn-hi').classList.toggle('active', lang === 'hi');
+  document.getElementById('btn-eng').classList.toggle('active', lang === 'eng');
+  
+  const welcomeText = document.getElementById('welcome-text');
+  if(lang === 'eng'){
+    welcomeText.innerHTML = "Hello! What can we build or learn today?";
+    document.getElementById('user-input').placeholder = "Ask anything in English...";
+  } else {
+    welcomeText.innerHTML = "नमस्ते! आज हम क्या नया सीख सकते हैं?";
+    document.getElementById('user-input').placeholder = "यहाँ अपना सवाल लिखें...";
+  }
+}
 
 function escapeHTML(text){
   return text.replace(/[&<>"']/g, function(c){
@@ -100,28 +122,28 @@ async function askGemini(){
   const userText = input.value.trim();
 
   if(!userText) return;
-
   if(welcome) welcome.style.display = "none";
 
   addMessage(userText, "user-message");
   input.value = "";
   button.disabled = true;
-  setStatus("Gemini जवाब तैयार कर रहा है...");
+  setStatus(currentLang === 'eng' ? "Generating response..." : "जवाब तैयार किया जा रहा है...");
 
   try{
-    // OAuth token format handling for secure header injection
-    const authHeader = CREDENTIAL.startsWith("AQ.") ? "Bearer " + CREDENTIAL : "Bearer " + CREDENTIAL;
+    const CREDENTIAL = "AQ.Ab8RN6LRjycGIkyvIuB4i0w-xQmFZjMLlGGImCCupkOF4VpH-A";
+    const MODEL = "gemini-1.5-flash";
+    const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL + ":generateContent";
 
     const response = await fetch(ENDPOINT, {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization": authHeader
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + CREDENTIAL
       },
-      body:JSON.stringify({
-        contents:[{
-          role:"user",
-          parts:[{text:userText}]
+      body: JSON.stringify({
+        contents: [{
+          role: "user",
+          parts: [{ text: userText }]
         }]
       })
     });
@@ -129,24 +151,20 @@ async function askGemini(){
     const data = await response.json();
 
     if(!response.ok){
-      const msg = data?.error?.message || ("HTTP Error " + response.status);
+      const msg = data?.error?.message || "Authentication Error";
       addMessage("API Error: " + msg, "ai-message");
       return;
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts
-      ?.map(p => p.text || "")
-      .join("")
-      .trim();
-
+    const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("").trim();
     if(reply){
       addMessage(reply, "ai-message");
-    }else{
-      addMessage("क्षमा करें, कोई उत्तर नहीं मिला।", "ai-message");
+    } else {
+      addMessage("कोई उत्तर नहीं मिला।", "ai-message");
     }
-  }catch(error){
+  } catch(error) {
     addMessage("Network Error: " + error.message, "ai-message");
-  }finally{
+  } finally {
     button.disabled = false;
     setStatus("");
     input.focus();
@@ -157,24 +175,14 @@ function handleFile(event){
   const file = event.target.files[0];
   if(!file) return;
   document.getElementById("welcome-section").style.display="none";
-  addMessage("📁 File जोड़ी गई: " + file.name, "user-message");
-  addMessage("File मिल गई है।", "ai-message");
+  addMessage("📁 फाइल जोड़ी गई: " + file.name, "user-message");
 }
 
 function handleGallery(event){
   const file = event.target.files[0];
   if(!file) return;
   document.getElementById("welcome-section").style.display="none";
-  addMessage("🖼️ Gallery photo चुनी गई: " + file.name, "user-message");
-  addMessage("Photo मिल गई है।", "ai-message");
-}
-
-function handleCamera(event){
-  const file = event.target.files[0];
-  if(!file) return;
-  document.getElementById("welcome-section").style.display="none";
-  addMessage("📷 Camera photo ली गई: " + file.name, "user-message");
-  addMessage("Photo capture हो गई है।", "ai-message");
+  addMessage("🖼️ फोटो चुनी गई: " + file.name, "user-message");
 }
 </script>
 </body>
