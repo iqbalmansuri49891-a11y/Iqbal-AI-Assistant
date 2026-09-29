@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: llama-3.3-70b-versatile
+        model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: message }],
         temperature: 0.7
       })
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: data.error?.message || 'Groq API Error' });
+      return res.status(500).json({ error: data.error?.message || 'Groq API Error' });
     }
 
     const reply = data.choices[0].message.content;
