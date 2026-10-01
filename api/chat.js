@@ -1,8 +1,6 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed"
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
@@ -17,31 +15,48 @@ export default async function handler(req, res) {
     const geminiKey = process.env.GEMINI_API_KEY;
     const openRouterKey = process.env.OPENROUTER_API_KEY;
 
-    // =====================================================
-    // IMAGE GENERATION
-    // =====================================================
+    if (!geminiKey && !openRouterKey) {
+      return res.status(500).json({
+        error:
+          "API key missing. Vercel Environment Variables में GEMINI_API_KEY या OPENROUTER_API_KEY डालें।"
+      });
+    }
 
     const text = (message || "").toLowerCase();
 
-    const imageRequest =
+    // ==================================================
+    // IMAGE GENERATION REQUEST DETECTION
+    // ==================================================
+
+    const wantsImage =
       text.includes("image banao") ||
       text.includes("image bana") ||
+      text.includes("image बनाओ") ||
+      text.includes("image बना") ||
       text.includes("photo banao") ||
       text.includes("photo bana") ||
+      text.includes("photo बनाओ") ||
+      text.includes("photo बना") ||
       text.includes("tasveer banao") ||
       text.includes("tasveer bana") ||
+      text.includes("तस्वीर बनाओ") ||
+      text.includes("चित्र बनाओ") ||
       text.includes("picture banao") ||
       text.includes("picture bana") ||
       text.includes("generate image") ||
-      text.includes("generate a image") ||
       text.includes("create image") ||
       text.includes("make an image") ||
       text.includes("draw an image") ||
-      text.includes("image generate");
+      text.includes("generate a picture") ||
+      text.includes("create a picture");
 
-    if (imageRequest && geminiKey) {
+    // ==================================================
+    // GEMINI IMAGE GENERATION
+    // ==================================================
+
+    if (wantsImage && geminiKey) {
       try {
-        const response = await fetch(
+        const imageResponse = await fetch(
           "https://generativelanguage.googleapis.com/v1beta/interactions",
           {
             method: "POST",
@@ -52,24 +67,27 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               model: "gemini-3.1-flash-image",
               input: message,
-              response_format: [
-                {
-                  type: "text"
-                },
-                {
-                  type: "image"
-                }
-              ],
+              response_format: {
+                type: "image",
+                mime_type: "image/png",
+                aspect_ratio: "1:1",
+                image_size: "1K"
+              },
               store: false
             })
           }
         );
 
-        const data = await response.json();
+        const data = await imageResponse.json();
 
-        if (response.ok) {
-          let reply = "";
+        if (!imageResponse.ok) {
+          console.log(
+            "Gemini image error:",
+            data?.error?.message || data
+          );
+        } else {
           let generatedImage = null;
+          let reply = data?.output_text || "";
 
           // Direct output_image
           if (data?.output_image?.data) {
@@ -80,14 +98,13 @@ export default async function handler(req, res) {
             };
           }
 
-          // Parse steps
-          if (Array.isArray(data?.steps)) {
+          // Check model output steps
+          if (!generatedImage && Array.isArray(data?.steps)) {
             for (const step of data.steps) {
               if (step?.type !== "model_output") continue;
 
               if (Array.isArray(step.content)) {
                 for (const item of step.content) {
-
                   if (
                     item?.type === "text" &&
                     item?.text
@@ -110,26 +127,16 @@ export default async function handler(req, res) {
             }
           }
 
-          if (!reply && data?.output_text) {
-            reply = data.output_text;
-          }
-
           if (generatedImage) {
             return res.status(200).json({
               reply:
                 reply.trim() ||
-                "Image ready hai.",
+                "आपकी image तैयार है।",
               image: generatedImage,
               provider: "gemini-image"
             });
           }
         }
-
-        console.log(
-          "Gemini image error:",
-          data?.error?.message || "Unknown error"
-        );
-
       } catch (error) {
         console.log(
           "Gemini image failed:",
@@ -138,9 +145,9 @@ export default async function handler(req, res) {
       }
     }
 
-    // =====================================================
-    // NORMAL GEMINI CHAT + IMAGE UNDERSTANDING
-    // =====================================================
+    // ==================================================
+    // NORMAL GEMINI CHAT / IMAGE UNDERSTANDING
+    // ==================================================
 
     if (geminiKey) {
       try {
@@ -216,7 +223,6 @@ export default async function handler(req, res) {
           "Gemini unavailable:",
           data?.error?.message || "Unknown Gemini error"
         );
-
       } catch (error) {
         console.log(
           "Gemini failed:",
@@ -225,9 +231,9 @@ export default async function handler(req, res) {
       }
     }
 
-    // =====================================================
-    // OPENROUTER CHAT FALLBACK
-    // =====================================================
+    // ==================================================
+    // OPENROUTER FALLBACK
+    // ==================================================
 
     if (openRouterKey) {
       try {
@@ -279,13 +285,12 @@ export default async function handler(req, res) {
         if (!response.ok) {
           console.log(
             "OpenRouter error:",
-            data?.error?.message ||
-              "Unknown OpenRouter error"
+            data?.error?.message || data
           );
 
           return res.status(500).json({
             error:
-              "Gemini limit reached and OpenRouter is unavailable."
+              "Gemini limit reached और OpenRouter भी unavailable है।"
           });
         }
 
@@ -295,7 +300,7 @@ export default async function handler(req, res) {
         if (!reply) {
           return res.status(500).json({
             error:
-              "OpenRouter returned no response."
+              "OpenRouter ने कोई response नहीं दिया।"
           });
         }
 
@@ -303,7 +308,6 @@ export default async function handler(req, res) {
           reply: reply.trim(),
           provider: "openrouter"
         });
-
       } catch (error) {
         console.log(
           "OpenRouter failed:",
@@ -312,30 +316,21 @@ export default async function handler(req, res) {
 
         return res.status(500).json({
           error:
-            "Both AI services are currently unavailable."
+            "दोनों AI services अभी unavailable हैं।"
         });
       }
     }
 
-    // =====================================================
-    // NO API KEY
-    // =====================================================
-
     return res.status(500).json({
-      error:
-        "No AI API key configured. Add GEMINI_API_KEY or OPENROUTER_API_KEY in Vercel."
+      error: "AI service unavailable."
     });
 
   } catch (error) {
-    console.error(
-      "Server error:",
-      error
-    );
+    console.error("Server error:", error);
 
     return res.status(500).json({
       error:
-        error.message ||
-        "Server error"
+        error.message || "Server error"
     });
   }
 }
