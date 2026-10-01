@@ -42,15 +42,36 @@ export default async function handler(req, res) {
       });
     }
 
-    const reply = data?.output_text;
+    // Gemini Interactions API से text निकालना
+    let reply = "";
+
+    if (Array.isArray(data?.steps)) {
+      for (const step of data.steps) {
+        if (step?.type === "model_output" && Array.isArray(step.content)) {
+          for (const item of step.content) {
+            if (item?.type === "text" && item?.text) {
+              reply += item.text;
+            }
+          }
+        }
+      }
+    }
+
+    // कुछ responses में output_text उपलब्ध हो सकता है
+    if (!reply && data?.output_text) {
+      reply = data.output_text;
+    }
 
     if (!reply) {
       return res.status(500).json({
-        error: "No response from Gemini"
+        error: "Gemini returned no text response",
+        details: data
       });
     }
 
-    return res.status(200).json({ reply });
+    return res.status(200).json({
+      reply: reply.trim()
+    });
 
   } catch (error) {
     return res.status(500).json({
