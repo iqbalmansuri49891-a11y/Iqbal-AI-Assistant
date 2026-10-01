@@ -13,8 +13,8 @@ export default async function handler(req, res) {
     }
 
     // UPDATED MODEL - 2026 ka latest stable model
-    const modelName = "gemini-3.8-flash
-    
+    const modelName = "gemini-2.0-flash";
+
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`,
       {
@@ -38,6 +38,7 @@ export default async function handler(req, res) {
     if (!reply) {
       return res.status(500).json({ error: 'No response from Gemini' });
     }
+
     return res.status(200).json({ reply });
 
   } catch (error) {
