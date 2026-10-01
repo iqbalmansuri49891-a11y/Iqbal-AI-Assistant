@@ -7,14 +7,30 @@
 <title>Iqbal AI Assistant</title>
 <style>
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0b141a;color:#e9edef;margin:0;height:100vh;display:flex;flex-direction:column}
-header{padding:10px 12px;background:#111b21;border-bottom:1px solid #222d34;display:flex;justify-content:space-between;align-items:center;gap:8px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0b141a;color:#e9edef;margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{padding:10px 12px;background:#111b21;border-bottom:1px solid #222d34;display:flex;justify-content:space-between;align-items:center;gap:8px;z-index:10}
 .brand{display:flex;align-items:center;gap:8px;min-width:0}
+.menu-btn{background:none;border:0;color:#e9edef;font-size:20px;cursor:pointer;padding:0 4px;display:flex;align-items:center}
 .logo{background:#d4af37;color:#0b141a;font-weight:700;padding:4px 8px;border-radius:6px;font-size:14px;flex-shrink:0}
 .title-text{font-size:15px;font-weight:700;color:#f3f4f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lang-selector{display:flex;background:#202c33;border-radius:16px;padding:2px;gap:2px;flex-shrink:0}
 .lang-btn{background:transparent;border:0;color:#8696a0;padding:4px 10px;border-radius:14px;font-size:11px;cursor:pointer;font-weight:600}
 .lang-btn.active{background:#d4af37;color:#0b141a}
+
+/* Sidebar / Menu Overlay */
+.sidebar{position:fixed;top:0;left:-280px;width:280px;height:100%;background:#111b21;border-right:1px solid #222d34;transition:left 0.3s ease;z-index:100;display:flex;flex-direction:column;box-shadow:4px 0 15px rgba(0,0,0,0.5)}
+.sidebar.open{left:0}
+.sidebar-header{padding:15px;border-bottom:1px solid #222d34;display:flex;align-items:center;justify-content:space-between}
+.sidebar-profile{display:flex;align-items:center;gap:10px}
+.profile-avatar{width:36px;height:36px;background:#d4af37;color:#0b141a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.sidebar-user-name{font-size:14px;font-weight:600;color:#f3f4f6;word-break:break-all}
+.close-sidebar{background:none;border:0;color:#8696a0;font-size:20px;cursor:pointer}
+.sidebar-content{flex:1;overflow-y:auto;padding:15px}
+.sidebar-section-title{font-size:12px;color:#8696a0;margin-bottom:10px;font-weight:600;text-transform:uppercase}
+.chat-history-item{padding:10px;background:#202c33;border-radius:8px;margin-bottom:8px;font-size:13px;color:#e9edef;cursor:pointer;border:1px solid #222d34;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-history-item:hover{background:#2a3942}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;z-index:99}
+.overlay.open{display:block}
 
 #login-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:#0b141a}
 .login-card{background:#111b21;padding:25px;border-radius:16px;border:1px solid #222d34;max-width:380px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
@@ -22,7 +38,7 @@ header{padding:10px 12px;background:#111b21;border-bottom:1px solid #222d34;disp
 .login-card p{color:#8696a0;font-size:13px;margin-bottom:20px}
 .google-btn{background:#ffffff;color:#222d34;border:0;border-radius:24px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
 
-#app-screen{flex:1;display:flex;flex-direction:column;display:none}
+#app-screen{flex:1;display:flex;flex-direction:column;display:none;overflow:hidden}
 #chat-container{flex:1;background:#0b141a;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
 .welcome-box{background:#111b21;padding:16px;border-radius:12px;border:1px solid #222d34;margin-bottom:10px}
 .welcome-box h1{font-size:16px;color:#f3f4f6;margin:0 0 10px;line-height:1.5}
@@ -40,32 +56,48 @@ input[type=text]::placeholder{color:#8696a0}
 .send-btn:disabled{opacity:.5}
 .hidden{display:none}
 .status{font-size:11px;color:#8696a0;text-align:center;padding:2px}
-.user-info{font-size:12px;color:#d4af37;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
 </style>
 </head>
 <body>
 
+<!-- Sidebar Menu (Profile & History अलग) -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-profile">
+      <div id="sidebar-avatar" class="profile-avatar">A</div>
+      <div id="sidebar-username" class="sidebar-user-name">User</div>
+    </div>
+    <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
+  </div>
+  <div class="sidebar-content">
+    <div class="sidebar-section-title">चैट इतिहास (Chat History)</div>
+    <div id="history-list">
+      <div class="chat-history-item" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 नोटबुक आइडिया</div>
+      <div class="chat-history-item" onclick="setQuery('आज का दिन शानदार बनाने के टिप्स')">✨ दिन शानदार बनाने के टिप्स</div>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="brand">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
     <div class="logo">AI</div>
     <div class="title-text">Iqbal AI</div>
   </div>
-  <div style="display:flex; align-items:center; gap:8px;">
-    <div id="user-profile" class="user-info"></div>
-    <div class="lang-selector">
-      <button class="lang-btn active" id="btn-hi" onclick="setLang('hi')">हिंदी</button>
-      <button class="lang-btn" id="btn-eng" onclick="setLang('eng')">Eng</button>
-    </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" id="btn-hi" onclick="setLang('hi')">हिंदी</button>
+    <button class="lang-btn" id="btn-eng" onclick="setLang('eng')">Eng</button>
   </div>
 </header>
 
 <div id="login-screen">
   <div class="login-card">
     <h2>Welcome / स्वागत है</h2>
-    <p>Please enter your name to start.</p>
+    <p>Sign in with your Google account to start.</p>
     <button class="google-btn" onclick="loginWithGoogle()">
       <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.16 21.3 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.16 2.7 1.18 6.62l4.09 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-      Sign in
+      Sign in with Google
     </button>
   </div>
 </div>
@@ -73,7 +105,7 @@ input[type=text]::placeholder{color:#8696a0}
 <div id="app-screen">
   <div id="chat-container">
     <div class="welcome-box" id="welcome-section">
-      <h1 id="welcome-text">नमस्ते! आज हम क्या नया सीख सकते हैं?</h1>
+      <h1 id="welcome-text">Hi Welcome to Iqbal AI, what can we build or learn today?</h1>
       <div class="suggestion-chips">
         <button class="chip" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 एक शानदार नोटबुक आइडिया लिखो</button>
         <button class="chip" onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">🖼️ खूबसूरत इमेज का आइडिया</button>
@@ -104,12 +136,6 @@ let userName = '';
 
 window.onload = function() {
   let savedUser = localStorage.getItem('iqbal_ai_user');
-  // अगर पुराना डेटा जीमेल वाला है, तो उसे साफ़ कर देगा
-  if(!savedUser || savedUser.includes('@')) {
-    localStorage.removeItem('iqbal_ai_user');
-    savedUser = null;
-  }
-  
   if(savedUser) {
     userName = savedUser;
     showAppScreen();
@@ -117,18 +143,33 @@ window.onload = function() {
 };
 
 function loginWithGoogle(){
-  let name = prompt("अपना नाम लिखें / Enter your name:");
-  if(name && name.trim() !== ""){
-    userName = name.trim();
+  let email = prompt("Enter your Google Account Email / अपना गूगल ईमेल दर्ज करें:");
+  if(email && email.includes("@")){
+    userName = email.split('@')[0];
     localStorage.setItem('iqbal_ai_user', userName);
     showAppScreen();
+  } else if(email) {
+    alert("Please enter a valid email address.");
   }
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
 }
 
 function showAppScreen(){
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
-  document.getElementById('user-profile').textContent = "👤 " + userName;
+  document.getElementById('sidebar-username').textContent = userName;
+  document.getElementById('sidebar-avatar').textContent = userName.charAt(0).toUpperCase();
+  
+  const welcomeText = document.getElementById('welcome-text');
+  if(currentLang === 'eng'){
+    welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! What can we build or learn today?";
+  } else {
+    welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! आज हम क्या नया सीख सकते हैं?";
+  }
 }
 
 function setLang(lang){
@@ -137,12 +178,14 @@ function setLang(lang){
   document.getElementById('btn-eng').classList.toggle('active', lang === 'eng');
   
   const welcomeText = document.getElementById('welcome-text');
-  if(lang === 'eng'){
-    welcomeText.innerHTML = "Hello " + (userName || "") + "! What can we build or learn today?";
-    document.getElementById('user-input').placeholder = "Ask anything in English...";
-  } else {
-    welcomeText.innerHTML = "नमस्ते " + (userName || "") + "! आज हम क्या नया सीख सकते हैं?";
-    document.getElementById('user-input').placeholder = "यहाँ अपना सवाल लिखें...";
+  if(userName) {
+    if(lang === 'eng'){
+      welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! What can we build or learn today?";
+      document.getElementById('user-input').placeholder = "Ask anything in English...";
+    } else {
+      welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! आज हम क्या नया सीख सकते हैं?";
+      document.getElementById('user-input').placeholder = "यहाँ अपना सवाल लिखें...";
+    }
   }
 }
 
@@ -163,6 +206,7 @@ function addMessage(text, type){
 
 function setQuery(text){
   document.getElementById("user-input").value = text;
+  toggleSidebar();
   askAI();
 }
 
@@ -191,20 +235,25 @@ async function askAI(){
       body: JSON.stringify({ message: userText })
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch(e) {
+      throw new Error("Server response is not valid JSON: " + rawText.slice(0, 80));
+    }
 
     if(!response.ok){
-      addMessage("Error: " + (data.error || "Something went wrong"), "ai-message");
-      return;
+      throw new Error(data.error || "Something went wrong");
     }
 
     if(data.reply){
       addMessage(data.reply, "ai-message");
     } else {
-      addMessage("कोई उत्तर नहीं मिला।", "ai-message");
+      addMessage("कोई उत्तर नहीं मिला。", "ai-message");
     }
   } catch(error) {
-    addMessage("Network Error: " + error.message, "ai-message");
+    addMessage("Error: " + error.message, "ai-message");
   } finally {
     button.disabled = false;
     setStatus("");
