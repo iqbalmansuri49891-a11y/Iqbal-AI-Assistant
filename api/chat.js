@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     }
 
     // UPDATED MODEL - 2026 ka latest stable model
-    const modelName = "gemini-2.5-flash";
+    const modelName = "gemini-3.8-flash
     
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`,
