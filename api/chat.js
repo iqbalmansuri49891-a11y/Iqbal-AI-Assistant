@@ -10,20 +10,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const apiKey = process.env.DEEPSEEK_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'DEEPSEEK_API_KEY is not configured on Vercel' });
+      return res.status(500).json({ error: 'OPENROUTER_API_KEY is not configured on Vercel' });
     }
 
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://ver.cel',
+        'X-Title': 'Iqbal AI Assistant'
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'deepseek/deepseek-chat:free',
         messages: [
           { role: 'user', content: message }
         ],
@@ -35,14 +37,14 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       return res.status(response.status).json({
-        error: data?.error?.message || 'DeepSeek API error'
+        error: data?.error?.message || 'OpenRouter API error'
       });
     }
 
     const reply = data?.choices?.[0]?.message?.content;
 
     if (!reply) {
-      return res.status(500).json({ error: 'No response from DeepSeek' });
+      return res.status(500).json({ error: 'No response from OpenRouter' });
     }
 
     return res.status(200).json({ reply });
