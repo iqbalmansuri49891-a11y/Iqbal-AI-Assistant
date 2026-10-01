@@ -4,10 +4,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body || {};
+    const { message, image } = req.body || {};
 
-    if (!message) {
-      return res.status(400).json({ error: "Message is required" });
+    if (!message && !image) {
+      return res.status(400).json({
+        error: "Message or image is required"
+      });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -15,6 +17,23 @@ export default async function handler(req, res) {
     if (!apiKey) {
       return res.status(500).json({
         error: "GEMINI_API_KEY is not configured"
+      });
+    }
+
+    const input = [];
+
+    if (message) {
+      input.push({
+        type: "text",
+        text: message
+      });
+    }
+
+    if (image) {
+      input.push({
+        type: "image",
+        data: image.data,
+        mime_type: image.mime_type
       });
     }
 
@@ -28,7 +47,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: "gemini-3.8-flash",
-          input: message,
+          input: input,
           store: false
         })
       }
@@ -42,12 +61,14 @@ export default async function handler(req, res) {
       });
     }
 
-    // Gemini Interactions API से text निकालना
     let reply = "";
 
     if (Array.isArray(data?.steps)) {
       for (const step of data.steps) {
-        if (step?.type === "model_output" && Array.isArray(step.content)) {
+        if (
+          step?.type === "model_output" &&
+          Array.isArray(step.content)
+        ) {
           for (const item of step.content) {
             if (item?.type === "text" && item?.text) {
               reply += item.text;
@@ -57,7 +78,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // कुछ responses में output_text उपलब्ध हो सकता है
     if (!reply && data?.output_text) {
       reply = data.output_text;
     }
