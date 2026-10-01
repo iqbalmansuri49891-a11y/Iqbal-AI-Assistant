@@ -19,23 +19,17 @@ export default async function handler(req, res) {
     }
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
-        encodeURIComponent(apiKey),
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: message
-                }
-              ]
-            }
-          ]
+          model: "gemini-3.8-flash",
+          input: message,
+          store: false
         })
       }
     );
@@ -48,8 +42,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const reply = data?.output_text;
 
     if (!reply) {
       return res.status(500).json({
