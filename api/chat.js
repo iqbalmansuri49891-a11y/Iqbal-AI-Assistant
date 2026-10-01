@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         'X-Title': 'Iqbal AI Assistant'
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-lite-preview:free'
+        model: 'google/gemini-2.0-flash-lite-preview:free',
         messages: [
           { role: 'user', content: message }
         ],
@@ -33,7 +33,13 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      return res.status(500).json({ error: 'Invalid JSON response from OpenRouter: ' + responseText.slice(0, 100) });
+    }
 
     if (!response.ok) {
       return res.status(response.status).json({
