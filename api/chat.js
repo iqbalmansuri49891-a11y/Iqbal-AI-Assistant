@@ -5,20 +5,20 @@ export default async function handler(req, res) {
 
   try {
     const { message } = req.body;
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apikey = process.env.OPENAI_API_KEY;
 
-    if (!apiKey) {
-      return res.status(500).json({ error: 'API key not configured on Vercel.' });
+    if (!apikey) {
+      return res.status(500).json({ error: 'API key not configured on Vercel' });
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apikey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile
+        model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: message }],
         temperature: 0.7
       })
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(500).json({ error: data.error?.message || 'Groq API Error' });
+      return res.status(500).json({ error: data.error?.message || 'Groq API error' });
     }
 
     const reply = data.choices[0].message.content;
