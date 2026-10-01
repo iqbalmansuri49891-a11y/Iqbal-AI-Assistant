@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'OPENROUTER_API_KEY is not configured on Vercel' });
+      return res.status(500).json({ error: 'OPENROUTER_API_KEY is not configured' });
     }
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -21,11 +21,11 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://ver.cel',
+        'HTTP-Referer': 'https://netlify.app',
         'X-Title': 'Iqbal AI Assistant'
       },
       body: JSON.stringify({
-      model: 'openrouter/free',
+        model: 'deepseek/deepseek-chat:free',
         messages: [
           { role: 'user', content: message }
         ],
@@ -35,10 +35,11 @@ export default async function handler(req, res) {
 
     const responseText = await response.text();
     let data;
+    
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      return res.status(500).json({ error: 'Invalid JSON response from OpenRouter: ' + responseText.slice(0, 100) });
+      return res.status(500).json({ error: 'Invalid JSON response from OpenRouter', details: responseText });
     }
 
     if (!response.ok) {
@@ -47,7 +48,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const reply = data?.choices?.[0]?.message?.content;
+    const reply = data.choices?.[0]?.message?.content;
 
     if (!reply) {
       return res.status(500).json({ error: 'No response from OpenRouter' });
