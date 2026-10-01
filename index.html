@@ -5,63 +5,466 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b141a">
 <title>Iqbal AI Assistant</title>
+
 <style>
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0b141a;color:#e9edef;margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-header{padding:10px 12px;background:#111b21;border-bottom:1px solid #222d34;display:flex;justify-content:space-between;align-items:center;gap:8px;z-index:10}
-.brand{display:flex;align-items:center;gap:8px;min-width:0}
-.menu-btn{background:none;border:0;color:#e9edef;font-size:20px;cursor:pointer;padding:0 4px;display:flex;align-items:center}
-.logo{background:#d4af37;color:#0b141a;font-weight:700;padding:4px 8px;border-radius:6px;font-size:14px;flex-shrink:0}
-.title-text{font-size:15px;font-weight:700;color:#f3f4f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lang-selector{display:flex;background:#202c33;border-radius:16px;padding:2px;gap:2px;flex-shrink:0}
-.lang-btn{background:transparent;border:0;color:#8696a0;padding:4px 10px;border-radius:14px;font-size:11px;cursor:pointer;font-weight:600}
-.lang-btn.active{background:#d4af37;color:#0b141a}
 
-/* Sidebar / Menu Overlay */
-.sidebar{position:fixed;top:0;left:-280px;width:280px;height:100%;background:#111b21;border-right:1px solid #222d34;transition:left 0.3s ease;z-index:100;display:flex;flex-direction:column;box-shadow:4px 0 15px rgba(0,0,0,0.5)}
-.sidebar.open{left:0}
-.sidebar-header{padding:15px;border-bottom:1px solid #222d34;display:flex;align-items:center;justify-content:space-between}
-.sidebar-profile{display:flex;align-items:center;gap:10px}
-.profile-avatar{width:36px;height:36px;background:#d4af37;color:#0b141a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
-.sidebar-user-name{font-size:14px;font-weight:600;color:#f3f4f6;word-break:break-all}
-.close-sidebar{background:none;border:0;color:#8696a0;font-size:20px;cursor:pointer}
-.sidebar-content{flex:1;overflow-y:auto;padding:15px}
-.sidebar-section-title{font-size:12px;color:#8696a0;margin-bottom:10px;font-weight:600;text-transform:uppercase}
-.chat-history-item{padding:10px;background:#202c33;border-radius:8px;margin-bottom:8px;font-size:13px;color:#e9edef;cursor:pointer;border:1px solid #222d34;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat-history-item:hover{background:#2a3942}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;z-index:99}
-.overlay.open{display:block}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:#0b141a;
+  color:#e9edef;
+  margin:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden
+}
 
-#login-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:#0b141a}
-.login-card{background:#111b21;padding:25px;border-radius:16px;border:1px solid #222d34;max-width:380px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
-.login-card h2{color:#f3f4f6;margin-bottom:10px;font-size:20px}
-.login-card p{color:#8696a0;font-size:13px;margin-bottom:20px}
-.google-btn{background:#ffffff;color:#222d34;border:0;border-radius:24px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
+header{
+  padding:10px 12px;
+  background:#111b21;
+  border-bottom:1px solid #222d34;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  z-index:10
+}
 
-#app-screen{flex:1;display:flex;flex-direction:column;display:none;overflow:hidden}
-#chat-container{flex:1;background:#0b141a;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-.welcome-box{background:#111b21;padding:16px;border-radius:12px;border:1px solid #222d34;margin-bottom:10px}
-.welcome-box h1{font-size:16px;color:#f3f4f6;margin:0 0 10px;line-height:1.5}
-.suggestion-chips{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-.chip{background:#202c33;padding:8px 12px;border-radius:8px;font-size:12px;color:#d4af37;cursor:pointer;width:fit-content;border:1px solid #222d34;text-align:left}
-.message{padding:10px 14px;border-radius:12px;max-width:88%;line-height:1.5;font-size:14px;word-break:break-word;white-space:pre-wrap}
-.user-message{background:#005c4b;color:#e9edef;align-self:flex-end;border-bottom-right-radius:3px}
-.ai-message{background:#202c33;color:#e9edef;align-self:flex-start;border-bottom-left-radius:3px;border:1px solid #222d34}
-.input-area{background:#111b21;padding:8px 10px;border-top:1px solid #222d34}
-.input-box-wrapper{display:flex;align-items:center;background:#202c33;border-radius:22px;padding:3px 6px 3px 10px;gap:6px;border:1px solid #222d34}
-input[type=text]{flex:1;background:transparent;border:0;outline:0;font-size:13px;color:#e9edef;padding:6px 0}
-input[type=text]::placeholder{color:#8696a0}
-.tool-btn{background:none;border:0;cursor:pointer;font-size:16px;color:#8696a0;padding:4px;display:flex}
-.send-btn{background:#d4af37;color:#0b141a;border:0;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
-.send-btn:disabled{opacity:.5}
-.hidden{display:none}
-.status{font-size:11px;color:#8696a0;text-align:center;padding:2px}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0
+}
+
+.menu-btn{
+  background:none;
+  border:0;
+  color:#e9edef;
+  font-size:20px;
+  cursor:pointer;
+  padding:0 4px;
+  display:flex;
+  align-items:center
+}
+
+.logo{
+  background:#d4af37;
+  color:#0b141a;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:14px;
+  flex-shrink:0
+}
+
+.title-text{
+  font-size:15px;
+  font-weight:700;
+  color:#f3f4f6;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.lang-selector{
+  display:flex;
+  background:#202c33;
+  border-radius:16px;
+  padding:2px;
+  gap:2px;
+  flex-shrink:0
+}
+
+.lang-btn{
+  background:transparent;
+  border:0;
+  color:#8696a0;
+  padding:4px 10px;
+  border-radius:14px;
+  font-size:11px;
+  cursor:pointer;
+  font-weight:600
+}
+
+.lang-btn.active{
+  background:#d4af37;
+  color:#0b141a
+}
+
+/* Sidebar */
+
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-280px;
+  width:280px;
+  height:100%;
+  background:#111b21;
+  border-right:1px solid #222d34;
+  transition:left .3s ease;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  box-shadow:4px 0 15px rgba(0,0,0,.5)
+}
+
+.sidebar.open{
+  left:0
+}
+
+.sidebar-header{
+  padding:15px;
+  border-bottom:1px solid #222d34;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.sidebar-profile{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.profile-avatar{
+  width:36px;
+  height:36px;
+  background:#d4af37;
+  color:#0b141a;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:15px;
+  flex-shrink:0
+}
+
+.sidebar-user-name{
+  font-size:14px;
+  font-weight:600;
+  color:#f3f4f6;
+  word-break:break-all
+}
+
+.close-sidebar{
+  background:none;
+  border:0;
+  color:#8696a0;
+  font-size:20px;
+  cursor:pointer
+}
+
+.sidebar-content{
+  flex:1;
+  overflow-y:auto;
+  padding:15px
+}
+
+.sidebar-section-title{
+  font-size:12px;
+  color:#8696a0;
+  margin-bottom:10px;
+  font-weight:600;
+  text-transform:uppercase
+}
+
+.chat-history-item{
+  padding:10px;
+  background:#202c33;
+  border-radius:8px;
+  margin-bottom:8px;
+  font-size:13px;
+  color:#e9edef;
+  cursor:pointer;
+  border:1px solid #222d34;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
+.chat-history-item:hover{
+  background:#2a3942
+}
+
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:99
+}
+
+.overlay.open{
+  display:block
+}
+
+/* Login */
+
+#login-screen{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  text-align:center;
+  background:#0b141a
+}
+
+.login-card{
+  background:#111b21;
+  padding:25px;
+  border-radius:16px;
+  border:1px solid #222d34;
+  max-width:380px;
+  width:100%;
+  box-shadow:0 4px 20px rgba(0,0,0,.5)
+}
+
+.login-card h2{
+  color:#f3f4f6;
+  margin-bottom:10px;
+  font-size:20px
+}
+
+.login-card p{
+  color:#8696a0;
+  font-size:13px;
+  margin-bottom:20px
+}
+
+.google-btn{
+  background:#fff;
+  color:#222d34;
+  border:0;
+  border-radius:24px;
+  padding:10px 16px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  box-shadow:0 2px 5px rgba(0,0,0,.2)
+}
+
+/* App */
+
+#app-screen{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden
+}
+
+#chat-container{
+  flex:1;
+  background:#0b141a;
+  padding:12px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px
+}
+
+.welcome-box{
+  background:#111b21;
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #222d34;
+  margin-bottom:10px
+}
+
+.welcome-box h1{
+  font-size:16px;
+  color:#f3f4f6;
+  margin:0 0 10px;
+  line-height:1.5
+}
+
+.suggestion-chips{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:10px
+}
+
+.chip{
+  background:#202c33;
+  padding:8px 12px;
+  border-radius:8px;
+  font-size:12px;
+  color:#d4af37;
+  cursor:pointer;
+  width:fit-content;
+  border:1px solid #222d34;
+  text-align:left
+}
+
+.message{
+  padding:10px 14px;
+  border-radius:12px;
+  max-width:88%;
+  line-height:1.5;
+  font-size:14px;
+  word-break:break-word;
+  white-space:pre-wrap
+}
+
+.user-message{
+  background:#005c4b;
+  color:#e9edef;
+  align-self:flex-end;
+  border-bottom-right-radius:3px
+}
+
+.ai-message{
+  background:#202c33;
+  color:#e9edef;
+  align-self:flex-start;
+  border-bottom-left-radius:3px;
+  border:1px solid #222d34
+}
+
+.input-area{
+  background:#111b21;
+  padding:8px 10px;
+  border-top:1px solid #222d34
+}
+
+.input-box-wrapper{
+  display:flex;
+  align-items:center;
+  background:#202c33;
+  border-radius:22px;
+  padding:3px 6px 3px 10px;
+  gap:5px;
+  border:1px solid #222d34
+}
+
+input[type=text]{
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  font-size:13px;
+  color:#e9edef;
+  padding:6px 0;
+  min-width:0
+}
+
+input[type=text]::placeholder{
+  color:#8696a0
+}
+
+.tool-btn{
+  background:none;
+  border:0;
+  cursor:pointer;
+  font-size:17px;
+  color:#8696a0;
+  padding:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
+
+.tool-btn.active{
+  color:#d4af37
+}
+
+.send-btn{
+  background:#d4af37;
+  color:#0b141a;
+  border:0;
+  border-radius:50%;
+  width:34px;
+  height:34px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  font-weight:700;
+  flex-shrink:0
+}
+
+.send-btn:disabled{
+  opacity:.5
+}
+
+.hidden{
+  display:none
+}
+
+.status{
+  font-size:11px;
+  color:#8696a0;
+  text-align:center;
+  padding:2px
+}
+
+.image-preview{
+  display:none;
+  background:#111b21;
+  border:1px solid #222d34;
+  padding:7px;
+  margin-bottom:7px;
+  border-radius:10px;
+  align-items:center;
+  gap:8px
+}
+
+.image-preview img{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:7px
+}
+
+.image-preview-text{
+  flex:1;
+  font-size:11px;
+  color:#d4af37;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+
+.remove-image{
+  background:none;
+  border:0;
+  color:#8696a0;
+  font-size:17px;
+  cursor:pointer
+}
+
+.recording{
+  color:#ff5c5c!important;
+  animation:pulse 1s infinite
+}
+
+@keyframes pulse{
+  0%{opacity:1}
+  50%{opacity:.4}
+  100%{opacity:1}
+}
 </style>
 </head>
+
 <body>
 
-<!-- Sidebar Menu (Profile & History अलग) -->
+<!-- Sidebar -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-profile">
@@ -70,11 +473,22 @@ input[type=text]::placeholder{color:#8696a0}
     </div>
     <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
   </div>
+
   <div class="sidebar-content">
-    <div class="sidebar-section-title">चैट इतिहास (Chat History)</div>
+    <div class="sidebar-section-title">
+      चैट इतिहास (Chat History)
+    </div>
+
     <div id="history-list">
-      <div class="chat-history-item" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 नोटबुक आइडिया</div>
-      <div class="chat-history-item" onclick="setQuery('आज का दिन शानदार बनाने के टिप्स')">✨ दिन शानदार बनाने के टिप्स</div>
+      <div class="chat-history-item"
+           onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">
+        📓 नोटबुक आइडिया
+      </div>
+
+      <div class="chat-history-item"
+           onclick="setQuery('आज का दिन शानदार बनाने के टिप्स')">
+        ✨ दिन शानदार बनाने के टिप्स
+      </div>
     </div>
   </div>
 </div>
@@ -85,195 +499,979 @@ input[type=text]::placeholder{color:#8696a0}
     <div class="logo">AI</div>
     <div class="title-text">Iqbal AI</div>
   </div>
+
   <div class="lang-selector">
-    <button class="lang-btn active" id="btn-hi" onclick="setLang('hi')">हिंदी</button>
-    <button class="lang-btn" id="btn-eng" onclick="setLang('eng')">Eng</button>
+    <button class="lang-btn active"
+            id="btn-hi"
+            onclick="setLang('hi')">
+      हिंदी
+    </button>
+
+    <button class="lang-btn"
+            id="btn-eng"
+            onclick="setLang('eng')">
+      Eng
+    </button>
   </div>
 </header>
 
+<!-- Login -->
 <div id="login-screen">
+
   <div class="login-card">
+
     <h2>Welcome / स्वागत है</h2>
-    <p>Sign in with your Google account to start.</p>
-    <button class="google-btn" onclick="loginWithGoogle()">
-      <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.16 21.3 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.16 2.7 1.18 6.62l4.09 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+
+    <p>
+      Sign in with your Google account to start.
+    </p>
+
+    <button class="google-btn"
+            onclick="loginWithGoogle()">
+
+      <svg width="16"
+           height="16"
+           viewBox="0 0 24 24">
+
+        <path fill="#4285F4"
+          d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+
+        <path fill="#34A853"
+          d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.14C3.16 21.3 7.22 24 12 24z"/>
+
+        <path fill="#FBBC05"
+          d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.38l4.09-3.14z"/>
+
+        <path fill="#EA4335"
+          d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.16 2.7 1.18 6.62l4.09 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/>
+
+      </svg>
+
       Sign in with Google
+
     </button>
+
   </div>
+
 </div>
 
+<!-- App -->
 <div id="app-screen">
+
   <div id="chat-container">
-    <div class="welcome-box" id="welcome-section">
-      <h1 id="welcome-text">Hi Welcome to Iqbal AI, what can we build or learn today?</h1>
+
+    <div class="welcome-box"
+         id="welcome-section">
+
+      <h1 id="welcome-text">
+        Hi Welcome to Iqbal AI, what can we build or learn today?
+      </h1>
+
       <div class="suggestion-chips">
-        <button class="chip" onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">📓 एक शानदार नोटबुक आइडिया लिखो</button>
-        <button class="chip" onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">🖼️ खूबसूरत इमेज का आइडिया</button>
-        <button class="chip" onclick="setQuery('आज का दिन शानदार बनाने के लिए कुछ टिप्स दो')">✨ आज का दिन शानदार बनाने के टिप्स</button>
+
+        <button class="chip"
+                onclick="setQuery('एक शानदार नोटबुक आइडिया लिखो')">
+          📓 एक शानदार नोटबुक आइडिया लिखो
+        </button>
+
+        <button class="chip"
+                onclick="setQuery('मेरे लिए एक खूबसूरत इमेज का आइडिया बताओ')">
+          🖼️ खूबसूरत इमेज का आइडिया
+        </button>
+
+        <button class="chip"
+                onclick="setQuery('आज का दिन शानदार बनाने के लिए कुछ टिप्स दो')">
+          ✨ आज का दिन शानदार बनाने के टिप्स
+        </button>
+
       </div>
     </div>
+
   </div>
 
   <div class="input-area">
+
     <div id="status" class="status"></div>
-    <div class="input-box-wrapper">
-      <label for="file-input" class="tool-btn" title="फाइल">📎</label>
-      <input class="hidden" type="file" id="file-input" onchange="handleFile(event)">
 
-      <label for="gallery-input" class="tool-btn" title="गैलरी">🖼️</label>
-      <input class="hidden" type="file" id="gallery-input" accept="image/*" onchange="handleGallery(event)">
+    <!-- Image Preview -->
+    <div id="image-preview" class="image-preview">
 
-      <input type="text" id="user-input" placeholder="यहाँ अपना सवाल लिखें..."
-             onkeydown="if(event.key==='Enter') askAI()">
-      <button id="send-btn" class="send-btn" onclick="askAI()">➔</button>
+      <img id="preview-img" src="" alt="Preview">
+
+      <div id="image-preview-text"
+           class="image-preview-text">
+        फोटो तैयार है
+      </div>
+
+      <button class="remove-image"
+              onclick="removeImage()">
+        ✕
+      </button>
+
     </div>
+
+    <div class="input-box-wrapper">
+
+      <!-- File -->
+      <label for="file-input"
+             class="tool-btn"
+             title="फाइल">
+        📎
+      </label>
+
+      <input
+        class="hidden"
+        type="file"
+        id="file-input"
+        onchange="handleFile(event)">
+
+
+      <!-- Gallery -->
+      <label for="gallery-input"
+             class="tool-btn"
+             title="गैलरी">
+        🖼️
+      </label>
+
+      <input
+        class="hidden"
+        type="file"
+        id="gallery-input"
+        accept="image/*"
+        onchange="handleGallery(event)">
+
+
+      <!-- Mic -->
+      <button
+        id="mic-btn"
+        class="tool-btn"
+        title="Voice"
+        onclick="startVoice()">
+        🎤
+      </button>
+
+
+      <!-- Text -->
+      <input
+        type="text"
+        id="user-input"
+        placeholder="यहाँ अपना सवाल लिखें..."
+        onkeydown="if(event.key==='Enter') askAI()">
+
+
+      <!-- Send -->
+      <button
+        id="send-btn"
+        class="send-btn"
+        onclick="askAI()">
+        ➔
+      </button>
+
+    </div>
+
   </div>
+
 </div>
 
 <script>
+
 let currentLang = 'hi';
 let userName = '';
 
-window.onload = function() {
-  let savedUser = localStorage.getItem('iqbal_ai_user');
-  if(savedUser) {
+/* ==========================================
+   IMAGE DATA
+========================================== */
+
+let selectedImage = null;
+
+
+/* ==========================================
+   PAGE LOAD
+========================================== */
+
+window.onload = function(){
+
+  let savedUser =
+    localStorage.getItem('iqbal_ai_user');
+
+  if(savedUser){
+
     userName = savedUser;
+
     showAppScreen();
+
   }
+
 };
 
+
+/* ==========================================
+   LOGIN
+========================================== */
+
 function loginWithGoogle(){
-  let email = prompt("Enter your Google Account Email / अपना गूगल ईमेल दर्ज करें:");
+
+  let email = prompt(
+    "Enter your Google Account Email / अपना गूगल ईमेल दर्ज करें:"
+  );
+
   if(email && email.includes("@")){
-    userName = email.split('@')[0];
-    localStorage.setItem('iqbal_ai_user', userName);
+
+    userName =
+      email.split('@')[0];
+
+    localStorage.setItem(
+      'iqbal_ai_user',
+      userName
+    );
+
     showAppScreen();
-  } else if(email) {
-    alert("Please enter a valid email address.");
+
   }
+
+  else if(email){
+
+    alert(
+      "Please enter a valid email address."
+    );
+
+  }
+
 }
+
+
+/* ==========================================
+   SIDEBAR
+========================================== */
 
 function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('open');
+
+  document
+    .getElementById('sidebar')
+    .classList
+    .toggle('open');
+
+  document
+    .getElementById('overlay')
+    .classList
+    .toggle('open');
+
 }
+
+
+/* ==========================================
+   APP SCREEN
+========================================== */
 
 function showAppScreen(){
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'flex';
-  document.getElementById('sidebar-username').textContent = userName;
-  document.getElementById('sidebar-avatar').textContent = userName.charAt(0).toUpperCase();
-  
-  const welcomeText = document.getElementById('welcome-text');
-  if(currentLang === 'eng'){
-    welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! What can we build or learn today?";
-  } else {
-    welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! आज हम क्या नया सीख सकते हैं?";
-  }
+
+  document
+    .getElementById('login-screen')
+    .style.display = 'none';
+
+  document
+    .getElementById('app-screen')
+    .style.display = 'flex';
+
+  document
+    .getElementById('sidebar-username')
+    .textContent = userName;
+
+  document
+    .getElementById('sidebar-avatar')
+    .textContent =
+      userName.charAt(0).toUpperCase();
+
+  updateWelcome();
+
 }
+
+
+/* ==========================================
+   LANGUAGE
+========================================== */
+
+function updateWelcome(){
+
+  const welcomeText =
+    document.getElementById('welcome-text');
+
+  if(currentLang === 'eng'){
+
+    welcomeText.innerHTML =
+      "Hi Welcome to Iqbal AI, " +
+      userName +
+      "! What can we build or learn today?";
+
+  }else{
+
+    welcomeText.innerHTML =
+      "Hi Welcome to Iqbal AI, " +
+      userName +
+      "! आज हम क्या नया सीख सकते हैं?";
+
+  }
+
+}
+
 
 function setLang(lang){
+
   currentLang = lang;
-  document.getElementById('btn-hi').classList.toggle('active', lang === 'hi');
-  document.getElementById('btn-eng').classList.toggle('active', lang === 'eng');
-  
-  const welcomeText = document.getElementById('welcome-text');
-  if(userName) {
-    if(lang === 'eng'){
-      welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! What can we build or learn today?";
-      document.getElementById('user-input').placeholder = "Ask anything in English...";
-    } else {
-      welcomeText.innerHTML = "Hi Welcome to Iqbal AI, " + userName + "! आज हम क्या नया सीख सकते हैं?";
-      document.getElementById('user-input').placeholder = "यहाँ अपना सवाल लिखें...";
-    }
+
+  document
+    .getElementById('btn-hi')
+    .classList
+    .toggle('active', lang === 'hi');
+
+  document
+    .getElementById('btn-eng')
+    .classList
+    .toggle('active', lang === 'eng');
+
+  updateWelcome();
+
+  const input =
+    document.getElementById('user-input');
+
+  if(lang === 'eng'){
+
+    input.placeholder =
+      "Ask anything in English...";
+
+  }else{
+
+    input.placeholder =
+      "यहाँ अपना सवाल लिखें...";
+
   }
+
 }
+
+
+/* ==========================================
+   SECURITY
+========================================== */
 
 function escapeHTML(text){
-  return text.replace(/[&<>"']/g, function(c){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
-  });
+
+  return text.replace(
+    /[&<>"']/g,
+    function(c){
+
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[c];
+
+    }
+  );
+
 }
 
-function addMessage(text, type){
-  const chat = document.getElementById("chat-container");
-  const div = document.createElement("div");
-  div.className = "message " + type;
-  div.innerHTML = escapeHTML(text);
+
+/* ==========================================
+   ADD MESSAGE
+========================================== */
+
+function addMessage(text,type){
+
+  const chat =
+    document.getElementById(
+      "chat-container"
+    );
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "message " + type;
+
+  div.innerHTML =
+    escapeHTML(text);
+
   chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+
+  chat.scrollTop =
+    chat.scrollHeight;
+
 }
+
+
+/* ==========================================
+   QUERY BUTTON
+========================================== */
 
 function setQuery(text){
-  document.getElementById("user-input").value = text;
+
+  document
+    .getElementById("user-input")
+    .value = text;
+
   toggleSidebar();
+
   askAI();
+
 }
+
+
+/* ==========================================
+   STATUS
+========================================== */
 
 function setStatus(text){
-  document.getElementById("status").textContent = text || "";
+
+  document
+    .getElementById("status")
+    .textContent =
+      text || "";
+
 }
 
-async function askAI(){
-  const input = document.getElementById("user-input");
-  const button = document.getElementById("send-btn");
-  const welcome = document.getElementById("welcome-section");
-  const userText = input.value.trim();
 
-  if(!userText) return;
-  if(welcome) welcome.style.display = "none";
-
-  addMessage(userText, "user-message");
-  input.value = "";
-  button.disabled = true;
-  setStatus(currentLang === 'eng' ? "Generating response..." : "जवाब तैयार किया जा रहा है...");
-
-  try{
-    const response = await fetch('/api/chat', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userText })
-    });
-
-    const rawText = await response.text();
-    let data;
-    try {
-      data = JSON.parse(rawText);
-    } catch(e) {
-      throw new Error("Server response is not valid JSON: " + rawText.slice(0, 80));
-    }
-
-    if(!response.ok){
-      throw new Error(data.error || "Something went wrong");
-    }
-
-    if(data.reply){
-      addMessage(data.reply, "ai-message");
-    } else {
-      addMessage("कोई उत्तर नहीं मिला。", "ai-message");
-    }
-  } catch(error) {
-    addMessage("Error: " + error.message, "ai-message");
-  } finally {
-    button.disabled = false;
-    setStatus("");
-    input.focus();
-  }
-}
-
-function handleFile(event){
-  const file = event.target.files[0];
-  if(!file) return;
-  document.getElementById("welcome-section").style.display="none";
-  addMessage("📁 फाइल जोड़ी गई: " + file.name, "user-message");
-}
+/* ==========================================
+   PHOTO SELECT
+========================================== */
 
 function handleGallery(event){
-  const file = event.target.files[0];
+
+  const file =
+    event.target.files[0];
+
   if(!file) return;
-  document.getElementById("welcome-section").style.display="none";
-  addMessage("🖼️ फोटो चुनी गई: " + file.name, "user-message");
+
+  if(!file.type.startsWith("image/")){
+
+    alert("कृपया image/photo चुनें।");
+
+    return;
+
+  }
+
+  const reader =
+    new FileReader();
+
+  reader.onload = function(e){
+
+    const base64 =
+      e.target.result.split(",")[1];
+
+    selectedImage = {
+
+      data: base64,
+
+      mime_type: file.type,
+
+      name: file.name
+
+    };
+
+    document
+      .getElementById("preview-img")
+      .src = e.target.result;
+
+    document
+      .getElementById("image-preview-text")
+      .textContent =
+        file.name;
+
+    document
+      .getElementById("image-preview")
+      .style.display =
+        "flex";
+
+    document
+      .getElementById("welcome-section")
+      .style.display =
+        "none";
+
+    setStatus(
+      currentLang === 'eng'
+      ? "Photo selected. Ask something about it."
+      : "फोटो तैयार है। इसके बारे में कुछ पूछें।"
+    );
+
+  };
+
+  reader.readAsDataURL(file);
+
 }
+
+
+/* ==========================================
+   REMOVE PHOTO
+========================================== */
+
+function removeImage(){
+
+  selectedImage = null;
+
+  document
+    .getElementById("image-preview")
+    .style.display =
+      "none";
+
+  document
+    .getElementById("gallery-input")
+    .value = "";
+
+  setStatus("");
+
+}
+
+
+/* ==========================================
+   FILE
+========================================== */
+
+function handleFile(event){
+
+  const file =
+    event.target.files[0];
+
+  if(!file) return;
+
+  document
+    .getElementById("welcome-section")
+    .style.display =
+      "none";
+
+  addMessage(
+    "📁 फाइल जोड़ी गई: " +
+    file.name,
+    "user-message"
+  );
+
+}
+
+
+/* ==========================================
+   ASK AI
+========================================== */
+
+async function askAI(){
+
+  const input =
+    document.getElementById(
+      "user-input"
+    );
+
+  const button =
+    document.getElementById(
+      "send-btn"
+    );
+
+  const welcome =
+    document.getElementById(
+      "welcome-section"
+    );
+
+  const userText =
+    input.value.trim();
+
+
+  /* फोटो है लेकिन text नहीं */
+  let finalMessage =
+    userText;
+
+  if(selectedImage && !finalMessage){
+
+    finalMessage =
+      currentLang === 'eng'
+      ? "Please describe this image."
+      : "इस फोटो को समझाकर बताओ।";
+
+  }
+
+
+  if(!finalMessage && !selectedImage){
+
+    return;
+
+  }
+
+
+  if(welcome){
+
+    welcome.style.display =
+      "none";
+
+  }
+
+
+  /* User message */
+  if(userText){
+
+    addMessage(
+      userText,
+      "user-message"
+    );
+
+  }else if(selectedImage){
+
+    addMessage(
+      "🖼️ फोटो भेजी गई",
+      "user-message"
+    );
+
+  }
+
+
+  input.value = "";
+
+  button.disabled = true;
+
+
+  setStatus(
+    currentLang === 'eng'
+    ? "Iqbal AI is thinking..."
+    : "Iqbal AI सोच रहा है..."
+  );
+
+
+  try{
+
+    const body = {
+
+      message: finalMessage
+
+    };
+
+
+    /* Photo attach */
+    if(selectedImage){
+
+      body.image = {
+
+        data:
+          selectedImage.data,
+
+        mime_type:
+          selectedImage.mime_type
+
+      };
+
+    }
+
+
+    const response =
+      await fetch(
+        '/api/chat',
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(body)
+        }
+      );
+
+
+    const rawText =
+      await response.text();
+
+
+    let data;
+
+
+    try{
+
+      data =
+        JSON.parse(rawText);
+
+    }catch(e){
+
+      throw new Error(
+        "Server response is not valid JSON: " +
+        rawText.slice(0,100)
+      );
+
+    }
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "Something went wrong"
+      );
+
+    }
+
+
+    if(data.reply){
+
+      addMessage(
+        data.reply,
+        "ai-message"
+      );
+
+
+      /* 🔊 AI VOICE */
+      speakAI(data.reply);
+
+    }else{
+
+      addMessage(
+        "कोई उत्तर नहीं मिला।",
+        "ai-message"
+      );
+
+    }
+
+
+    /* Photo clear */
+
+    if(selectedImage){
+
+      removeImage();
+
+    }
+
+
+  }catch(error){
+
+    addMessage(
+      "Error: " +
+      error.message,
+      "ai-message"
+    );
+
+  }finally{
+
+    button.disabled = false;
+
+    setStatus("");
+
+    input.focus();
+
+  }
+
+}
+
+
+/* ==========================================
+   🎤 VOICE INPUT
+========================================== */
+
+let recognition = null;
+let isRecording = false;
+
+
+function startVoice(){
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if(!SpeechRecognition){
+
+    alert(
+      currentLang === 'eng'
+      ? "Voice input is not supported in this browser."
+      : "इस browser में voice input support नहीं है।"
+    );
+
+    return;
+
+  }
+
+
+  if(isRecording){
+
+    if(recognition){
+
+      recognition.stop();
+
+    }
+
+    return;
+
+  }
+
+
+  recognition =
+    new SpeechRecognition();
+
+
+  recognition.lang =
+    currentLang === 'eng'
+    ? 'en-IN'
+    : 'hi-IN';
+
+
+  recognition.continuous = false;
+
+  recognition.interimResults = true;
+
+
+  const mic =
+    document.getElementById(
+      "mic-btn"
+    );
+
+
+  recognition.onstart =
+    function(){
+
+      isRecording = true;
+
+      mic.classList.add(
+        "recording"
+      );
+
+      setStatus(
+        currentLang === 'eng'
+        ? "Listening..."
+        : "सुन रहा हूँ..."
+      );
+
+    };
+
+
+  recognition.onresult =
+    function(event){
+
+      let transcript = "";
+
+      for(
+        let i = event.resultIndex;
+        i < event.results.length;
+        i++
+      ){
+
+        transcript +=
+          event.results[i][0].transcript;
+
+      }
+
+
+      document
+        .getElementById("user-input")
+        .value =
+          transcript;
+
+    };
+
+
+  recognition.onerror =
+    function(event){
+
+      console.log(
+        "Voice error:",
+        event.error
+      );
+
+      setStatus(
+        currentLang === 'eng'
+        ? "Voice input error"
+        : "Voice में समस्या हुई"
+      );
+
+    };
+
+
+  recognition.onend =
+    function(){
+
+      isRecording = false;
+
+      mic.classList.remove(
+        "recording"
+      );
+
+      setStatus("");
+
+    };
+
+
+  recognition.start();
+
+}
+
+
+/* ==========================================
+   🔊 AI VOICE REPLY
+========================================== */
+
+function speakAI(text){
+
+  if(!("speechSynthesis" in window)){
+
+    return;
+
+  }
+
+
+  window.speechSynthesis.cancel();
+
+
+  const cleanText =
+    text
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/[*#_`]/g, "")
+      .trim();
+
+
+  if(!cleanText){
+
+    return;
+
+  }
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      cleanText
+    );
+
+
+  speech.lang =
+    currentLang === 'eng'
+    ? 'en-IN'
+    : 'hi-IN';
+
+
+  speech.rate = 0.95;
+
+  speech.pitch = 1;
+
+
+  window.speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* ==========================================
+   STOP VOICE WHEN PAGE CLOSES
+========================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    if(
+      "speechSynthesis" in window
+    ){
+
+      window.speechSynthesis.cancel();
+
+    }
+
+  }
+);
+
 </script>
+
 </body>
 </html>
