@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant
+        model: '3.3-70b-versatile
         messages: [{ role: 'user', content: message }],
         temperature: 0.7
       })
