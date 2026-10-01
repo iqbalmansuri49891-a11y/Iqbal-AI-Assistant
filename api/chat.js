@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         'X-Title': 'Iqbal AI Assistant'
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat:free',
+        model: 'google/gemini-2.0-flash-lite-preview:free'
         messages: [
           { role: 'user', content: message }
         ],
