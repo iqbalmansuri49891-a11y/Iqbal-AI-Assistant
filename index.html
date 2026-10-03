@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1153244824920209"
-     crossorigin="anonymous"></script>
+
+<script async
+src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1153244824920209"
+crossorigin="anonymous"></script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#212121">
+
 <title>Iqbal AI</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 html,body{
   margin:0;
@@ -21,7 +27,7 @@ html,body{
   color:#fff;
 }
 
-button,input,textarea{
+button,input,textarea,select{
   font:inherit;
 }
 
@@ -33,9 +39,7 @@ button{
   display:none!important;
 }
 
-/* =========================
-   APP
-========================= */
+/* APP */
 
 #app{
   width:100%;
@@ -44,9 +48,7 @@ button{
   overflow:hidden;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar{
   width:270px;
@@ -130,9 +132,7 @@ button{
   background:#2a2a2a;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main{
   flex:1;
@@ -149,6 +149,7 @@ button{
   padding:0 15px;
   border-bottom:1px solid #303030;
   background:#212121;
+  flex-shrink:0;
 }
 
 .mobile-menu{
@@ -184,9 +185,7 @@ button{
   background:#3a3a3a;
 }
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 #chat-screen{
   height:100%;
@@ -247,6 +246,10 @@ button{
   background:transparent;
 }
 
+.ai-wrap{
+  max-width:85%;
+}
+
 .voice-button{
   margin-top:6px;
   background:transparent;
@@ -257,9 +260,7 @@ button{
   font-size:12px;
 }
 
-/* =========================
-   INPUT
-========================= */
+/* INPUT */
 
 .input-area{
   position:absolute;
@@ -337,9 +338,7 @@ button{
   margin-bottom:5px;
 }
 
-/* =========================
-   PROFILE
-========================= */
+/* PROFILE */
 
 #profile-screen{
   flex:1;
@@ -395,9 +394,7 @@ button{
   border-color:#7a3030;
 }
 
-/* =========================
-   LOGIN / SIGNUP
-========================= */
+/* LOGIN */
 
 #auth-screen{
   position:fixed;
@@ -471,9 +468,7 @@ button{
   min-height:18px;
 }
 
-/* =========================
-   VIDEO MAKER
-========================= */
+/* VIDEO */
 
 #video-screen{
   flex:1;
@@ -578,9 +573,7 @@ button{
   font-weight:600;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -629,15 +622,15 @@ button{
   .video-options{
     flex-direction:column;
   }
+
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN / SIGNUP
-========================= -->
+<!-- LOGIN -->
 
 <div id="auth-screen">
 
@@ -667,7 +660,10 @@ button{
       type="password"
       placeholder="Password">
 
-    <div id="auth-message" class="auth-message"></div>
+    <div
+      id="auth-message"
+      class="auth-message">
+    </div>
 
     <button
       id="auth-main-btn"
@@ -693,15 +689,15 @@ button{
 </div>
 
 
-<!-- =========================
-     APP
-========================= -->
+<!-- APP -->
 
 <div id="app" class="hidden">
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
 
-  <aside class="sidebar" id="sidebar">
+  <aside
+    class="sidebar"
+    id="sidebar">
 
     <button
       class="new-chat"
@@ -713,7 +709,7 @@ button{
       class="search"
       id="search-input"
       placeholder="Search chats..."
-      oninput="searchChats">
+      oninput="searchChats()">
 
     <div class="history-title">
       Chats
@@ -729,7 +725,12 @@ button{
       <button
         class="profile-btn"
         onclick="showProfile()">
-        👤 <span id="sidebar-name">Profile</span>
+
+        👤
+        <span id="sidebar-name">
+          Profile
+        </span>
+
       </button>
 
     </div>
@@ -737,7 +738,7 @@ button{
   </aside>
 
 
-  <!-- Main -->
+  <!-- MAIN -->
 
   <main class="main">
 
@@ -772,19 +773,21 @@ button{
     </header>
 
 
-    <!-- =========================
-         CHAT
-    ========================= -->
+    <!-- CHAT -->
 
     <section id="chat-screen">
 
-      <div class="chat-area" id="chat-area">
+      <div
+        class="chat-area"
+        id="chat-area">
 
         <div
           class="welcome"
           id="welcome">
 
-          <h1>What can I help with?</h1>
+          <h1>
+            What can I help with?
+          </h1>
 
           <p>
             Iqbal AI से कुछ भी पूछें
@@ -812,13 +815,16 @@ button{
           <label
             class="tool"
             title="Photo">
+
             📎
+
             <input
               type="file"
               id="image-input"
               accept="image/*"
               hidden
               onchange="handleImage(event)">
+
           </label>
 
           <button
@@ -849,9 +855,7 @@ button{
     </section>
 
 
-    <!-- =========================
-         PROFILE
-    ========================= -->
+    <!-- PROFILE -->
 
     <section
       id="profile-screen"
@@ -906,9 +910,7 @@ button{
     </section>
 
 
-    <!-- =========================
-         VIDEO SCREEN
-    ========================= -->
+    <!-- VIDEO -->
 
     <section
       id="video-screen"
@@ -921,12 +923,13 @@ button{
         </div>
 
         <div class="video-subtitle">
-          अपना idea लिखें और Iqbal AI browser में animated video बनाएगा।
+          अपना idea लिखें और Iqbal AI से AI video बनाएं।
         </div>
 
         <textarea
           id="video-prompt"
-          placeholder="उदाहरण: एक लड़का बारिश में बाइक चला रहा है और रात में शहर की lights चमक रही हैं..."></textarea>
+          placeholder="उदाहरण: एक लड़का बारिश में बाइक चला रहा है और रात में शहर की lights चमक रही हैं...">
+        </textarea>
 
         <div class="video-options">
 
@@ -989,7 +992,7 @@ button{
         <a
           id="download-video"
           class="download-video"
-          download="iqbal-ai-video.webm">
+          download="iqbal-ai-video.mp4">
           ⬇️ Video Download करें
         </a>
 
@@ -1004,9 +1007,9 @@ button{
 
 <script>
 
-/* =========================
+/* =====================================================
    STATE
-========================= */
+===================================================== */
 
 let authMode = "login";
 let user = null;
@@ -1015,9 +1018,9 @@ let recognition = null;
 let isRecording = false;
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 window.addEventListener("load",function(){
 
@@ -1027,10 +1030,15 @@ window.addEventListener("load",function(){
   if(saved){
 
     try{
+
       user = JSON.parse(saved);
+
       startApp();
+
     }catch(e){
+
       localStorage.removeItem("iqbal_user");
+
     }
 
   }
@@ -1038,9 +1046,9 @@ window.addEventListener("load",function(){
 });
 
 
-/* =========================
+/* =====================================================
    AUTH MODE
-========================= */
+===================================================== */
 
 function toggleAuthMode(){
 
@@ -1061,7 +1069,7 @@ function toggleAuthMode(){
   const name =
     document.getElementById("auth-name");
 
-  if(authMode==="signup"){
+  if(authMode === "signup"){
 
     title.textContent =
       "नया Iqbal AI Account बनाएं";
@@ -1091,25 +1099,30 @@ function toggleAuthMode(){
 
   }
 
-  document.getElementById("auth-message").textContent="";
+  document.getElementById(
+    "auth-message"
+  ).textContent = "";
 
 }
 
 
-/* =========================
+/* =====================================================
    LOGIN / SIGNUP
-========================= */
+===================================================== */
 
 function authAction(){
 
   const name =
-    document.getElementById("auth-name").value.trim();
+    document.getElementById("auth-name")
+      .value.trim();
 
   const email =
-    document.getElementById("auth-email").value.trim();
+    document.getElementById("auth-email")
+      .value.trim();
 
   const password =
-    document.getElementById("auth-password").value;
+    document.getElementById("auth-password")
+      .value;
 
   const msg =
     document.getElementById("auth-message");
@@ -1132,7 +1145,7 @@ function authAction(){
 
   }
 
-  if(authMode==="signup" && !name){
+  if(authMode === "signup" && !name){
 
     msg.textContent =
       "अपना नाम डालें।";
@@ -1161,9 +1174,9 @@ function authAction(){
 }
 
 
-/* =========================
+/* =====================================================
    GUEST
-========================= */
+===================================================== */
 
 function demoLogin(){
 
@@ -1185,9 +1198,9 @@ function demoLogin(){
 }
 
 
-/* =========================
+/* =====================================================
    START APP
-========================= */
+===================================================== */
 
 function startApp(){
 
@@ -1206,9 +1219,9 @@ function startApp(){
 }
 
 
-/* =========================
+/* =====================================================
    PROFILE
-========================= */
+===================================================== */
 
 function updateProfile(){
 
@@ -1227,14 +1240,16 @@ function updateProfile(){
   document.getElementById(
     "profile-avatar"
   ).textContent =
-    user.name.charAt(0).toUpperCase();
+    user.name
+      .charAt(0)
+      .toUpperCase();
 
 }
 
 
-/* =========================
+/* =====================================================
    SCREENS
-========================= */
+===================================================== */
 
 function showProfile(){
 
@@ -1293,13 +1308,15 @@ function showVideo(){
 }
 
 
-/* =========================
+/* =====================================================
    LOGOUT
-========================= */
+===================================================== */
 
 function logout(){
 
-  if(!confirm("Logout करना है?")) return;
+  if(!confirm("Logout करना है?")){
+    return;
+  }
 
   localStorage.removeItem("iqbal_user");
 
@@ -1315,14 +1332,14 @@ function logout(){
 
   document.getElementById(
     "auth-password"
-  ).value="";
+  ).value = "";
 
 }
 
 
-/* =========================
+/* =====================================================
    SIDEBAR
-========================= */
+===================================================== */
 
 function toggleSidebar(){
 
@@ -1342,23 +1359,21 @@ function closeSidebar(){
 }
 
 
-/* =========================
+/* =====================================================
    NEW CHAT
-========================= */
+===================================================== */
 
 function newChat(){
 
   document.getElementById(
     "messages"
-  ).innerHTML="";
+  ).innerHTML = "";
 
   document.getElementById(
     "welcome"
-  ).style.display="block";
+  ).style.display = "block";
 
   showChat();
-
-  closeSidebar();
 
   document.getElementById(
     "user-input"
@@ -1367,9 +1382,9 @@ function newChat(){
 }
 
 
-/* =========================
+/* =====================================================
    MESSAGE
-========================= */
+===================================================== */
 
 function addMessage(text,type){
 
@@ -1382,39 +1397,50 @@ function addMessage(text,type){
   row.className =
     "message-row " + type;
 
+  const wrap =
+    document.createElement("div");
+
+  if(type === "ai"){
+    wrap.className = "ai-wrap";
+  }
+
   const bubble =
     document.createElement("div");
 
-  bubble.className="message";
+  bubble.className = "message";
 
-  bubble.textContent=text;
+  bubble.textContent = text;
 
-  row.appendChild(bubble);
+  wrap.appendChild(bubble);
 
-  if(type==="ai"){
+  if(type === "ai"){
 
     const voice =
       document.createElement("button");
 
-    voice.className="voice-button";
+    voice.className =
+      "voice-button";
 
-    voice.textContent="🔊 सुनें";
+    voice.textContent =
+      "🔊 सुनें";
 
-    voice.onclick=function(){
+    voice.onclick = function(){
 
       speakAI(text);
 
     };
 
-    row.appendChild(voice);
+    wrap.appendChild(voice);
 
   }
+
+  row.appendChild(wrap);
 
   messages.appendChild(row);
 
   document.getElementById(
     "welcome"
-  ).style.display="none";
+  ).style.display = "none";
 
   const area =
     document.getElementById("chat-area");
@@ -1425,9 +1451,9 @@ function addMessage(text,type){
 }
 
 
-/* =========================
+/* =====================================================
    ASK AI
-========================= */
+===================================================== */
 
 async function askAI(){
 
@@ -1440,10 +1466,11 @@ async function askAI(){
   const text =
     input.value.trim();
 
-  if(!text && !selectedImage) return;
+  if(!text && !selectedImage){
+    return;
+  }
 
-  let message =
-    text;
+  let message = text;
 
   if(selectedImage && !message){
 
@@ -1457,9 +1484,9 @@ async function askAI(){
     "user"
   );
 
-  input.value="";
+  input.value = "";
 
-  send.disabled=true;
+  send.disabled = true;
 
   document.getElementById(
     "status"
@@ -1469,33 +1496,40 @@ async function askAI(){
 
   try{
 
-    const body={
-      message:message
+    const body = {
+      message: message
     };
 
     if(selectedImage){
 
-      body.image={
-        data:selectedImage.data,
-        mime_type:selectedImage.mime_type
+      body.image = {
+
+        data:
+          selectedImage.data,
+
+        mime_type:
+          selectedImage.mime_type
+
       };
 
     }
 
+
     const response =
-      await fetch("/api/chat",{
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
 
-        method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify(body)
-
-      });
+          body:
+            JSON.stringify(body)
+        }
+      );
 
 
     const raw =
@@ -1503,9 +1537,11 @@ async function askAI(){
 
     let data;
 
+
     try{
 
-      data=JSON.parse(raw);
+      data =
+        JSON.parse(raw);
 
     }catch(e){
 
@@ -1533,9 +1569,13 @@ async function askAI(){
         "ai"
       );
 
-      speakAI(data.reply);
+      speakAI(
+        data.reply
+      );
 
-      saveHistory(text || "Photo");
+      saveHistory(
+        text || "Photo"
+      );
 
     }else{
 
@@ -1550,34 +1590,36 @@ async function askAI(){
   }catch(error){
 
     addMessage(
-      "Error: "+error.message,
+      "Error: " + error.message,
       "ai"
     );
 
   }finally{
 
-    send.disabled=false;
+    send.disabled = false;
 
     document.getElementById(
       "status"
-    ).textContent="";
+    ).textContent = "";
 
-    selectedImage=null;
+    selectedImage = null;
 
     document.getElementById(
       "image-input"
-    ).value="";
+    ).value = "";
 
-    input.focus();
+    document.getElementById(
+      "user-input"
+    ).focus();
 
   }
 
 }
 
 
-/* =========================
+/* =====================================================
    VOICE INPUT
-========================= */
+===================================================== */
 
 function startVoice(){
 
@@ -1606,102 +1648,127 @@ function startVoice(){
   recognition =
     new SpeechRecognition();
 
-  recognition.lang="hi-IN";
+  recognition.lang =
+    "hi-IN";
 
-  recognition.continuous=false;
+  recognition.continuous =
+    false;
 
-  recognition.interimResults=false;
+  recognition.interimResults =
+    false;
 
-  recognition.onstart=function(){
 
-    isRecording=true;
+  recognition.onstart =
+    function(){
 
-    document.getElementById(
-      "mic-btn"
-    ).textContent="🔴";
+      isRecording = true;
 
-    document.getElementById(
-      "status"
-    ).textContent="सुन रहा हूँ...";
+      document.getElementById(
+        "mic-btn"
+      ).textContent = "🔴";
 
-  };
+      document.getElementById(
+        "status"
+      ).textContent =
+        "सुन रहा हूँ...";
 
-  recognition.onresult=function(event){
+    };
 
-    const text =
-      event.results[0][0].transcript;
 
-    document.getElementById(
-      "user-input"
-    ).value=text;
+  recognition.onresult =
+    function(event){
 
-    askAI();
+      const text =
+        event.results[0][0]
+          .transcript;
 
-  };
+      document.getElementById(
+        "user-input"
+      ).value = text;
 
-  recognition.onerror=function(){
+      askAI();
 
-    isRecording=false;
+    };
 
-    document.getElementById(
-      "mic-btn"
-    ).textContent="🎤";
 
-    document.getElementById(
-      "status"
-    ).textContent="";
+  recognition.onerror =
+    function(){
 
-  };
+      isRecording = false;
 
-  recognition.onend=function(){
+      document.getElementById(
+        "mic-btn"
+      ).textContent = "🎤";
 
-    isRecording=false;
+      document.getElementById(
+        "status"
+      ).textContent = "";
 
-    document.getElementById(
-      "mic-btn"
-    ).textContent="🎤";
+    };
 
-    document.getElementById(
-      "status"
-    ).textContent="";
 
-  };
+  recognition.onend =
+    function(){
+
+      isRecording = false;
+
+      document.getElementById(
+        "mic-btn"
+      ).textContent = "🎤";
+
+      document.getElementById(
+        "status"
+      ).textContent = "";
+
+    };
+
 
   recognition.start();
 
 }
 
 
-/* =========================
+/* =====================================================
    AI VOICE
-========================= */
+===================================================== */
 
 function speakAI(text){
 
   if(!("speechSynthesis" in window)){
-
     return;
-
   }
 
   window.speechSynthesis.cancel();
 
   const clean =
     text
-      .replace(/```[\s\S]*?```/g,"")
-      .replace(/[*#_`]/g,"")
+      .replace(
+        /```[\s\S]*?```/g,
+        ""
+      )
+      .replace(
+        /[*#_`]/g,
+        ""
+      )
       .trim();
 
-  if(!clean) return;
+  if(!clean){
+    return;
+  }
 
   const utterance =
-    new SpeechSynthesisUtterance(clean);
+    new SpeechSynthesisUtterance(
+      clean
+    );
 
-  utterance.lang="hi-IN";
+  utterance.lang =
+    "hi-IN";
 
-  utterance.rate=.9;
+  utterance.rate =
+    .9;
 
-  utterance.pitch=1;
+  utterance.pitch =
+    1;
 
   window.speechSynthesis.speak(
     utterance
@@ -1710,20 +1777,24 @@ function speakAI(text){
 }
 
 
-/* =========================
+/* =====================================================
    IMAGE
-========================= */
+===================================================== */
 
 function handleImage(event){
 
   const file =
     event.target.files[0];
 
-  if(!file) return;
+  if(!file){
+    return;
+  }
 
   if(!file.type.startsWith("image/")){
 
-    alert("कृपया image चुनें।");
+    alert(
+      "कृपया image चुनें।"
+    );
 
     return;
 
@@ -1732,43 +1803,56 @@ function handleImage(event){
   const reader =
     new FileReader();
 
-  reader.onload=function(e){
 
-    selectedImage={
-      data:e.target.result.split(",")[1],
-      mime_type:file.type
+  reader.onload =
+    function(e){
+
+      selectedImage = {
+
+        data:
+          e.target.result
+            .split(",")[1],
+
+        mime_type:
+          file.type
+
+      };
+
+      document.getElementById(
+        "user-input"
+      ).placeholder =
+        "Photo के बारे में पूछें...";
+
     };
 
-    document.getElementById(
-      "user-input"
-    ).placeholder =
-      "Photo के बारे में पूछें...";
-
-  };
 
   reader.readAsDataURL(file);
 
 }
 
 
-/* =========================
+/* =====================================================
    CHAT HISTORY
-========================= */
+===================================================== */
 
 function saveHistory(text){
 
-  if(!text) return;
+  if(!text){
+    return;
+  }
 
   let history =
     JSON.parse(
-      localStorage.getItem("iqbal_history") ||
-      "[]"
+      localStorage.getItem(
+        "iqbal_history"
+      ) || "[]"
     );
 
   history.unshift(text);
 
   history =
-    [...new Set(history)].slice(0,30);
+    [...new Set(history)]
+      .slice(0,30);
 
   localStorage.setItem(
     "iqbal_history",
@@ -1783,44 +1867,55 @@ function saveHistory(text){
 function loadHistory(){
 
   const box =
-    document.getElementById("history");
+    document.getElementById(
+      "history"
+    );
 
   const history =
     JSON.parse(
-      localStorage.getItem("iqbal_history") ||
-      "[]"
+      localStorage.getItem(
+        "iqbal_history"
+      ) || "[]"
     );
 
-  box.innerHTML="";
+  box.innerHTML = "";
 
-  history.forEach(function(item){
 
-    const div =
-      document.createElement("div");
+  history.forEach(
+    function(item){
 
-    div.className="history-item";
+      const div =
+        document.createElement(
+          "div"
+        );
 
-    div.textContent=item;
+      div.className =
+        "history-item";
 
-    div.onclick=function(){
+      div.textContent =
+        item;
 
-      document.getElementById(
-        "user-input"
-      ).value=item;
+      div.onclick =
+        function(){
 
-      showChat();
+          document.getElementById(
+            "user-input"
+          ).value = item;
 
-      closeSidebar();
+          showChat();
 
-      document.getElementById(
-        "user-input"
-      ).focus();
+          closeSidebar();
 
-    };
+          document.getElementById(
+            "user-input"
+          ).focus();
 
-    box.appendChild(div);
+        };
 
-  });
+      box.appendChild(div);
+
+    }
+  );
 
 }
 
@@ -1830,55 +1925,72 @@ function searchChats(){
   const query =
     document.getElementById(
       "search-input"
-    ).value.toLowerCase();
+    ).value
+      .toLowerCase();
 
   document
-    .querySelectorAll(".history-item")
-    .forEach(function(item){
+    .querySelectorAll(
+      ".history-item"
+    )
+    .forEach(
+      function(item){
 
-      item.style.display =
-        item.textContent
-          .toLowerCase()
-          .includes(query)
-          ? "block"
-          : "none";
+        item.style.display =
+          item.textContent
+            .toLowerCase()
+            .includes(query)
+            ? "block"
+            : "none";
 
-    });
+      }
+    );
 
 }
 
 
 /* =====================================================
-   FREE TEXT → VIDEO
-   Browser-based animated video
+   AI TEXT → VIDEO
+   IMPORTANT:
+   यह /api/video को call करता है
 ===================================================== */
 
 async function createFreeVideo(){
 
   const prompt =
-    document.getElementById("video-prompt")
-      .value.trim();
+    document.getElementById(
+      "video-prompt"
+    ).value.trim();
 
   const status =
-    document.getElementById("video-status");
-
-  const video =
-    document.getElementById("result-video");
-
-  const download =
-    document.getElementById("download-video");
-
-  const button =
-    document.getElementById("create-video-btn");
-
-  const duration =
-    parseInt(
-      document.getElementById("video-duration").value,
-      10
+    document.getElementById(
+      "video-status"
     );
 
+  const video =
+    document.getElementById(
+      "result-video"
+    );
+
+  const download =
+    document.getElementById(
+      "download-video"
+    );
+
+  const button =
+    document.getElementById(
+      "create-video-btn"
+    );
+
+  const duration =
+    document.getElementById(
+      "video-duration"
+    ).value;
+
   const format =
-    document.getElementById("video-format").value;
+    document.getElementById(
+      "video-format"
+    ).value;
+
 
   if(!prompt){
 
@@ -1889,579 +2001,218 @@ async function createFreeVideo(){
 
   }
 
-  if(!window.MediaRecorder){
 
-    status.textContent =
-      "इस browser में video recording support नहीं है। Chrome में खोलकर कोशिश करें।";
+  button.disabled = true;
 
-    return;
+  video.style.display =
+    "none";
 
-  }
+  download.style.display =
+    "none";
 
-  button.disabled=true;
-
-  video.style.display="none";
-
-  download.style.display="none";
 
   status.textContent =
-    "🎬 Video तैयार हो रहा है...";
+    "🎬 AI video बनाया जा रहा है... कृपया इंतजार करें।";
+
 
   try{
 
-    let width=720;
-    let height=1280;
+    /*
+      API को prompt भेजना
+    */
 
-    if(format==="landscape"){
-
-      width=1280;
-      height=720;
-
-    }
-
-    if(format==="square"){
-
-      width=720;
-      height=720;
-
-    }
-
-    const canvas =
-      document.createElement("canvas");
-
-    canvas.width=width;
-    canvas.height=height;
-
-    const ctx =
-      canvas.getContext("2d");
-
-    const stream =
-      canvas.captureStream(30);
-
-    let mimeType="video/webm";
-
-    if(
-      MediaRecorder.isTypeSupported(
-        "video/webm;codecs=vp9"
-      )
-    ){
-
-      mimeType="video/webm;codecs=vp9";
-
-    }else if(
-      MediaRecorder.isTypeSupported(
-        "video/webm;codecs=vp8"
-      )
-    ){
-
-      mimeType="video/webm;codecs=vp8";
-
-    }
-
-    const recorder =
-      new MediaRecorder(
-        stream,
+    const response =
+      await fetch(
+        "/api/video",
         {
-          mimeType:mimeType,
-          videoBitsPerSecond:2500000
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+
+              prompt: prompt,
+
+              duration:
+                Number(duration),
+
+              format:
+                format
+
+            })
+
         }
       );
 
-    const chunks=[];
 
-    recorder.ondataavailable =
-      function(event){
+    const raw =
+      await response.text();
 
-        if(event.data.size>0){
-
-          chunks.push(event.data);
-
-        }
-
-      };
+    let data;
 
 
-    const finished =
-      new Promise(function(resolve){
+    try{
 
-        recorder.onstop=function(){
+      data =
+        JSON.parse(raw);
 
-          resolve();
+    }catch(e){
 
-        };
+      throw new Error(
+        "Video server ने गलत response दिया।"
+      );
 
-      });
+    }
 
 
-    recorder.start(200);
+    if(!response.ok){
+
+      if(data?.locked){
+
+        throw new Error(
+          "🔒 Free video limit खत्म हो गई है।"
+        );
+
+      }
+
+      throw new Error(
+        data?.error ||
+        "Video generation failed."
+      );
+
+    }
 
 
-    const totalFrames =
-      duration * 30;
+    if(!data?.video){
 
-    const sceneDuration =
-      Math.max(
-        1,
-        Math.floor(
-          totalFrames / 4
-        )
+      throw new Error(
+        "Server ने video नहीं भेजा।"
+      );
+
+    }
+
+
+    /*
+      Base64 → Binary
+    */
+
+    const binary =
+      atob(data.video);
+
+    const bytes =
+      new Uint8Array(
+        binary.length
       );
 
 
     for(
-      let frame=0;
-      frame<totalFrames;
-      frame++
+      let i = 0;
+      i < binary.length;
+      i++
     ){
 
-      const scene =
-        Math.min(
-          3,
-          Math.floor(
-            frame / sceneDuration
-          )
-        );
-
-      const localFrame =
-        frame % sceneDuration;
-
-      const progress =
-        localFrame /
-        sceneDuration;
-
-
-      drawVideoScene(
-        ctx,
-        width,
-        height,
-        prompt,
-        scene,
-        progress,
-        frame
-      );
-
-
-      if(frame % 5 === 0){
-
-        status.textContent =
-          "🎬 Video बन रहा है... " +
-          Math.round(
-            (frame / totalFrames) * 100
-          ) +
-          "%";
-
-      }
-
-
-      await new Promise(function(resolve){
-
-        requestAnimationFrame(resolve);
-
-      });
+      bytes[i] =
+        binary.charCodeAt(i);
 
     }
 
 
-    recorder.stop();
+    /*
+      Binary → Blob
+    */
 
-    await finished;
+    const mimeType =
+      data.mime_type ||
+      "video/mp4";
 
 
     const blob =
       new Blob(
-        chunks,
+        [bytes],
         {
           type:mimeType
         }
       );
 
+
+    /*
+      Blob URL
+    */
+
     const url =
-      URL.createObjectURL(blob);
+      URL.createObjectURL(
+        blob
+      );
 
-    video.src=url;
 
-    video.style.display="block";
+    /*
+      Video player
+    */
 
-    download.href=url;
+    video.src = url;
 
-    download.download=
-      "iqbal-ai-video.webm";
+    video.style.display =
+      "block";
 
-    download.style.display="block";
+
+    /*
+      Download
+    */
+
+    download.href =
+      url;
+
+    download.download =
+      mimeType.includes("webm")
+      ? "iqbal-ai-video.webm"
+      : "iqbal-ai-video.mp4";
+
+    download.style.display =
+      "block";
+
 
     status.textContent =
-      "✅ आपका video तैयार है!";
+      "✅ AI video तैयार है!";
 
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "VIDEO ERROR:",
+      error
+    );
 
     status.textContent =
-      "❌ Video नहीं बन पाया: " +
+      "❌ " +
       error.message;
+
 
   }finally{
 
-    button.disabled=false;
+    button.disabled =
+      false;
 
   }
 
 }
 
 
-/* =========================
-   VIDEO SCENE DRAW
-========================= */
-
-function drawVideoScene(
-  ctx,
-  width,
-  height,
-  prompt,
-  scene,
-  progress,
-  frame
-){
-
-  /* Background */
-
-  const gradient =
-    ctx.createLinearGradient(
-      0,
-      0,
-      width,
-      height
-    );
-
-
-  const backgrounds=[
-    ["#020617","#0f766e"],
-    ["#172554","#7c2d12"],
-    ["#312e81","#115e59"],
-    ["#111827","#581c87"]
-  ];
-
-
-  const bg =
-    backgrounds[
-      scene % backgrounds.length
-    ];
-
-
-  gradient.addColorStop(
-    0,
-    bg[0]
-  );
-
-  gradient.addColorStop(
-    1,
-    bg[1]
-  );
-
-
-  ctx.fillStyle=gradient;
-
-  ctx.fillRect(
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  /* Animated glowing circles */
-
-  for(
-    let i=0;
-    i<10;
-    i++
-  ){
-
-    const x =
-      (
-        i * 150 +
-        frame * (0.8+i*0.08)
-      )
-      %
-      (width+300)
-      -150;
-
-    const y =
-      height * .20 +
-      Math.sin(
-        frame*.018+i
-      ) *
-      height*.16;
-
-    const radius =
-      25+i*7;
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-      x,
-      y,
-      radius,
-      0,
-      Math.PI*2
-    );
-
-    ctx.fillStyle =
-      "rgba(255,255,255,0.07)";
-
-    ctx.fill();
-
-  }
-
-
-  /* Animated light */
-
-  const lightX =
-    width*.5 +
-    Math.sin(frame*.015) *
-    width*.35;
-
-  const lightY =
-    height*.42 +
-    Math.cos(frame*.011) *
-    height*.15;
-
-
-  const glow =
-    ctx.createRadialGradient(
-      lightX,
-      lightY,
-      0,
-      lightX,
-      lightY,
-      width*.45
-    );
-
-
-  glow.addColorStop(
-    0,
-    "rgba(255,255,255,.18)"
-  );
-
-  glow.addColorStop(
-    1,
-    "rgba(255,255,255,0)"
-  );
-
-
-  ctx.fillStyle=glow;
-
-  ctx.fillRect(
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  /* Scene number */
-
-  ctx.textAlign="center";
-
-  ctx.fillStyle=
-    "rgba(255,255,255,.7)";
-
-  ctx.font=
-    "bold 24px Arial";
-
-  ctx.fillText(
-    "IQBAL AI • SCENE " +
-    (scene+1),
-    width/2,
-    height*.13
-  );
-
-
-  /* Main title */
-
-  const titles=[
-    "✨ आपकी कहानी",
-    "🎬 अगला दृश्य",
-    "🌟 कहानी जारी है",
-    "🎥 अंतिम दृश्य"
-  ];
-
-
-  ctx.fillStyle="#fff";
-
-  ctx.font=
-    "bold " +
-    Math.max(30,width*.065) +
-    "px Arial";
-
-
-  ctx.fillText(
-    titles[scene],
-    width/2,
-    height*.31
-  );
-
-
-  /* Prompt text */
-
-  const words =
-    prompt.split(/\s+/);
-
-  const lines=[];
-
-  let line="";
-
-  const maxWidth =
-    width*.78;
-
-
-  ctx.font=
-    "bold " +
-    Math.max(24,width*.043) +
-    "px Arial";
-
-
-  words.forEach(function(word){
-
-    const test =
-      line +
-      word +
-      " ";
-
-    if(
-      ctx.measureText(test).width >
-      maxWidth
-    ){
-
-      if(line.trim()){
-
-        lines.push(
-          line.trim()
-        );
-
-      }
-
-      line =
-        word+" ";
-
-    }else{
-
-      line=test;
-
-    }
-
-  });
-
-
-  if(line.trim()){
-
-    lines.push(
-      line.trim()
-    );
-
-  }
-
-
-  const visibleLines =
-    lines.slice(0,5);
-
-
-  const startY =
-    height*.44 -
-    progress*25;
-
-
-  visibleLines.forEach(
-    function(text,index){
-
-      const alpha =
-        Math.min(
-          1,
-          progress*3 + .15
-        );
-
-
-      ctx.fillStyle=
-        "rgba(255,255,255,"+
-        alpha+
-        ")";
-
-
-      ctx.fillText(
-        text,
-        width/2,
-        startY +
-        index *
-        Math.max(42,height*.055)
-      );
-
-    }
-  );
-
-
-  /* Progress line */
-
-  const barWidth =
-    width*.72;
-
-  const barX =
-    (width-barWidth)/2;
-
-  const barY =
-    height*.82;
-
-
-  ctx.fillStyle=
-    "rgba(255,255,255,.18)";
-
-  ctx.fillRect(
-    barX,
-    barY,
-    barWidth,
-    5
-  );
-
-
-  ctx.fillStyle="#10a37f";
-
-  ctx.fillRect(
-    barX,
-    barY,
-    barWidth*progress,
-    5
-  );
-
-
-  /* Watermark */
-
-  ctx.font=
-    "bold " +
-    Math.max(20,width*.035) +
-    "px Arial";
-
-  ctx.fillStyle=
-    "rgba(255,255,255,.75)";
-
-  ctx.fillText(
-    "Iqbal AI",
-    width/2,
-    height*.92
-  );
-
-}
-
-
-/* =========================
-   STOP VOICE
-========================= */
+/* =====================================================
+   CLEANUP
+===================================================== */
 
 window.addEventListener(
   "beforeunload",
   function(){
 
-    if("speechSynthesis" in window){
+    if(
+      "speechSynthesis"
+      in window
+    ){
 
       speechSynthesis.cancel();
 
